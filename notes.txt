@@ -1,1 +1,4 @@
 https://www.codecademy.com/articles/sql-commands?r=master60
+
+create a class to store a list of values
+http://cse.unl.edu/~sscott/ShowFiles/SQL/CheatSheet/SQLCheatSheet.html
