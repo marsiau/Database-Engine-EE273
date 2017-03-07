@@ -1,12 +1,19 @@
 #include <iostream>
-#include <string>
+
 using namespace std;
+
 int main()
 {
-	cout << "Hello World";
-	string hello;
-	cin >>  hello;
+	cout << "************************************************\n";
+	cout << "********** Database Management System **********\n";
+	cout << "************************************************\n";
+	cout << "****** Marius Siauciulis **** James White ******\n";
+	cout << "************************************************\n\n";
 
-	//TEST1
+	cout << "Command list:\n\nCREATE TABLE [tablename]\n(\n[colName1], [dataType]\n[colName2], [dataType]\n.......\n)\n\n";
+
+
+
+
+	system("PAUSE");
 }
-
