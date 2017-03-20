@@ -5,14 +5,23 @@
 #include <list>
 #include <vector>
 
+
+
 using namespace std;
-//TODO create a function to open table
-//TODO push table metadata into .txt file metadata
 
 //Table constructor
-Table::Table()
+Table::Table(TableName)
 {
+  string TableName = "TableName";
   fstream TableStream;
+  TableStream.open(TableName.c_str(), ios::out | ios::app); //Opened for output operations at the end of file
+  //ios::ate to delete previous info
+  //TODO check whether such table does not exist? or defoult sql action
+  if(!TableStream.is_open())
+  {
+      cout<<"Error creating a table file\n";
+  }
+
 }
 //Table destructor
 Table::~Table()
@@ -36,24 +45,13 @@ void Table::WRITE_TABLE(list< vector<string> > CollumnValues)
 }
 
 //Function to create a new table
-void Table::CREATE_TABLE(string TableName, vector<string> CollumnNames, vector<string> CollumnTypes)
+void Table::CREATE_TABLE(vector<string> CollumnNames, vector<string> CollumnTypes)
 {
   //Construcing a list of table metadata
   list< vector <string> > CollumnValues;
   CollumnValues.push_back(CollumnNames);
   CollumnValues.push_back(CollumnTypes);
-  //TODO check whether such table does not exist? or defoult sql action
-  TableStream.open(TableName.c_str(), ios::out | ios::app); //Opened for output operations at the end of file
-  //ios::ate to delete previous info
-  if(!TableStream.is_open())
-  {
-      cout<<"Error creating a table file\n";
-  }
-  else
-  {
-      WRITE_TABLE(CollumnValues);
-  }
-
+  WRITE_TABLE(CollumnValues);
 }
 
 //Function to create a new table and include values
@@ -67,4 +65,10 @@ void Table::CREATE_TABLE (string TableName, vector<string> CollumnNames, vector<
 void Table::DROP_TABLE(string TableName)
 {
   remove(TableName.c_str());
+}
+
+#if 1
+list< vector<string> > Table::SELECT(vector<string> Collumns)
+{
+
 }

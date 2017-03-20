@@ -1,0 +1,12 @@
+TODO create cell object with virtual functions
+LEARN Tamplates
+LEARN virtual functions
+//instead of union, this could be used:
+http://www.cplusplus.com/doc/tutorial/polymorphism/
+
+class
+  DATABASE
+    create table
+  TABLE
+
+  CELL

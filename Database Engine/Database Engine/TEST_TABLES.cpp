@@ -28,7 +28,7 @@ int main()
   CollumnValues.push_back({"Val11", "Val12", "Val13"});
   CollumnValues.push_back({"Val21", "Val22", "Val23"});
   CollumnValues.push_back({"Val31", "Val32", "Val33"});
-  //table1.CREATE_TABLE(tablename, CollumnNames, CollumnTypes, CollumnValues);
+  table1.CREATE_TABLE(tablename, CollumnNames, CollumnTypes, CollumnValues);
   table1.CREATE_TABLE(tablename, CollumnNames, CollumnTypes);
   return 0;
 }
