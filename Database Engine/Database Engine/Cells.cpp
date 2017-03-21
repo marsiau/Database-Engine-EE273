@@ -1,5 +1,10 @@
 #include "Cells.hpp"
 
-Cell::Cell();
-
-Cell::~Cell();
+template <class T> T Calc<T>::operator==(const Cells<T>& c)
+{
+	if (this->contents == c.contents)
+	{
+		return true;
+	}
+	else return false;
+}

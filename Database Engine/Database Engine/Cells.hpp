@@ -24,14 +24,14 @@ AbsCell methods
 
 using namespace std;
 
-class AbsCell
+template<class T> class Cell
 {
-private:
-
 public:
-  AbsCell();
-  ~AbsCell();
+	Cell<T>& operator==(const Cell<T>& classObj);
 
+private:
+	T contents;
 
 };
+
 #endif
