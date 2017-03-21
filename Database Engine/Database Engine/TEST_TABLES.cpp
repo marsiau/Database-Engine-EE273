@@ -18,7 +18,7 @@ int main()
 
   list< vector<string> > CollumnValues;
 
-
+/*
   CollumnNames.push_back("Name1");
   CollumnNames.push_back("Name2");
   CollumnNames.push_back("Name3");
@@ -30,7 +30,7 @@ int main()
   CollumnValues.push_back({"Val31", "Val32", "Val33"});
   table1.CREATE_TABLE(tablename, CollumnNames, CollumnTypes, CollumnValues);
   table1.CREATE_TABLE(tablename, CollumnNames, CollumnTypes);
-  return 0;
+  return 0;*/
 }
 /*
 g++ -std=c++11 -c TEST_TABLES.cpp -c Tables.cpp

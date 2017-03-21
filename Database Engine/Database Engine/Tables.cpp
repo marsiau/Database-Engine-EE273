@@ -5,35 +5,74 @@
 #include <list>
 #include <vector>
 
-
-
+//using Cell = string;
+typedef string Cell;
 using namespace std;
 
-//Table constructor
-Table::Table(TableName)
+//Auxiliary functions
+vector<Cell> ReadRow(ifstream &InputStream)
 {
-  string TableName = "TableName";
-  fstream TableStream;
-  TableStream.open(TableName.c_str(), ios::out | ios::app); //Opened for output operations at the end of file
-  //ios::ate to delete previous info
-  //TODO check whether such table does not exist? or defoult sql action
-  if(!TableStream.is_open())
+  vector<Cell> Row;
+  string TEMP;
+  while(InputStream.peek() != '\n')
+  {
+    getline(InputStream, TEMP, ',');
+    Row.push_back(TEMP);
+  }
+  InputStream.ignore(1);//To skip the \n
+  return Row;
+}
+//End
+
+//Table constructor. Creating a new table
+Table::Table(string TableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)
+{
+  Cell TableName = "TableName";
+  vector<Cell> TBCollumnNames = CollumnNames;
+  vector<Cell> TBCollumnTypes = CollumnTypes;
+  list< vector<Cell> > TableData;
+}
+
+
+//Table constructor. Opening an existing table
+Table::Table(string TableName)
+{
+  Cell TableName = "TableName";
+  ifstream TableStream;
+  //TODO check if table exists
+  TableStream.open(TableName.c_str());
+    if(!TableStream.is_open())
   {
       cout<<"Error creating a table file\n";
   }
+  else
+  {
+    //Read and store Collumn Names, Collumn Types and Table Data
+    vector<Cell> TBCollumnNames;
+    vector<Cell> TBCollumnTypes;
+    list< vector<Cell> > TableData;
+    string TEMP;
 
+    TBCollumnNames = ReadRow(TableStream);//Retrieve Collumn Names
+    TBCollumnTypes = ReadRow(TableStream);//Retrieve Collumn Types
+    //Retrieve Table Data
+    while(!TableStream.eof())
+    {
+      TableData.push_back(ReadRow(TableStream));
+    }
+  }
 }
 //Table destructor
 Table::~Table()
 {
   TableStream.close();
 }
-//Function to write a series of values to the table
-void Table::WRITE_TABLE(list< vector<string> > CollumnValues)
+//Function to write a series of values to the table file
+void Table::WRITE_TABLE_TF()
 {
-    //TableStream.seekp(0, ios::end);//go to the end of the file
-    list< vector<string> >::iterator LIt; // LIt - List Iterator
-    vector<string>::iterator VIt; // VIt - Vector Iterator
+    TableStream.seekp(0, ios::end);//go to the end of the file
+    list< vector<Cell> >::iterator LIt; // LIt - List Iterator
+    vector<Cell>::iterator VIt; // VIt - Vector Iterator
     for(LIt = CollumnValues.begin(); LIt != CollumnValues.end(); ++LIt)
     {
       for(VIt = LIt->begin(); VIt != LIt->end(); ++VIt)
@@ -44,31 +83,14 @@ void Table::WRITE_TABLE(list< vector<string> > CollumnValues)
     }
 }
 
-//Function to create a new table
-void Table::CREATE_TABLE(vector<string> CollumnNames, vector<string> CollumnTypes)
-{
-  //Construcing a list of table metadata
-  list< vector <string> > CollumnValues;
-  CollumnValues.push_back(CollumnNames);
-  CollumnValues.push_back(CollumnTypes);
-  WRITE_TABLE(CollumnValues);
-}
-
-//Function to create a new table and include values
-void Table::CREATE_TABLE (string TableName, vector<string> CollumnNames, vector<string> CollumnTypes, list< vector<string> > CollumnValues)
-{
-    CREATE_TABLE (TableName, CollumnNames, CollumnTypes);
-    WRITE_TABLE(CollumnValues);
-}
-
 //Function to delete a table
 void Table::DROP_TABLE(string TableName)
 {
   remove(TableName.c_str());
 }
 
-#if 1
-list< vector<string> > Table::SELECT(vector<string> Collumns)
+#if 0
+list< vector<Cell> > Table::SELECT(vector<Cell> Collumns)
 {
 
 }
