@@ -10,7 +10,7 @@ int main()
   string tablename;
   cout <<"enter tablename\n";
   cin >> tablename;
-  Table table1;
+
 
   vector<string> CollumnNames;
 

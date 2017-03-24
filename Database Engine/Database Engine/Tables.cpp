@@ -4,10 +4,10 @@
 #include <string>
 #include <list>
 #include <vector>
-
+//TableStream.seekp(0, ios::);//go to the end of the file
 //using Cell = string;
-typedef string Cell;
 using namespace std;
+typedef string Cell;
 
 //Auxiliary functions
 vector<Cell> ReadRow(ifstream &InputStream)
@@ -25,9 +25,9 @@ vector<Cell> ReadRow(ifstream &InputStream)
 //End
 
 //Table constructor. Creating a new table
-Table::Table(string TableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)
+Table::Table(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)
 {
-  Cell TableName = "TableName";
+  Cell TableName = NewTableName;
   vector<Cell> TBCollumnNames = CollumnNames;
   vector<Cell> TBCollumnTypes = CollumnTypes;
   list< vector<Cell> > TableData;
@@ -35,9 +35,9 @@ Table::Table(string TableName, vector<Cell> CollumnNames, vector<Cell> CollumnTy
 
 
 //Table constructor. Opening an existing table
-Table::Table(string TableName)
+Table::Table(string OpTableName)
 {
-  Cell TableName = "TableName";
+  Cell TableName = OpTableName;
   ifstream TableStream;
   //TODO check if table exists
   TableStream.open(TableName.c_str());
@@ -63,25 +63,7 @@ Table::Table(string TableName)
   }
 }
 //Table destructor
-Table::~Table()
-{
-  TableStream.close();
-}
-//Function to write a series of values to the table file
-void Table::WRITE_TABLE_TF()
-{
-    TableStream.seekp(0, ios::end);//go to the end of the file
-    list< vector<Cell> >::iterator LIt; // LIt - List Iterator
-    vector<Cell>::iterator VIt; // VIt - Vector Iterator
-    for(LIt = CollumnValues.begin(); LIt != CollumnValues.end(); ++LIt)
-    {
-      for(VIt = LIt->begin(); VIt != LIt->end(); ++VIt)
-      {
-        TableStream << (*VIt) << ',';
-      }
-      TableStream << endl;
-    }
-}
+//Table::~Table();
 
 //Function to delete a table
 void Table::DROP_TABLE(string TableName)
@@ -89,8 +71,38 @@ void Table::DROP_TABLE(string TableName)
   remove(TableName.c_str());
 }
 
+//Function to write a series of values to the table file
+void Table::WRITE_TABLE_TF()
+{
+  ofstream TableStream;
+  TableStream.open(TableName.c_str());
+  if(!TableStream.is_open())
+  {
+      cout<<"Error creating a table file\n";
+  }
+  else
+  {
+    //Pushing table collumn types and names to the data list
+    TableData.push_front(TBCollumnTypes);
+    TableData.push_front(TBCollumnNames);
+    //Writing the TableData and collumn types&names to file
+    list< vector<Cell> >::iterator LIt; // LIt - List Iterator
+    vector<Cell>::iterator VIt; // VIt - Vector Iterator
+    for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
+    {
+      for(VIt = LIt->begin(); VIt != LIt->end(); ++VIt)
+      {
+        TableStream << (*VIt) << ',';
+      }
+      TableStream << endl;
+    }
+    TableStream.close();
+  }
+}
+
 #if 0
 list< vector<Cell> > Table::SELECT(vector<Cell> Collumns)
 {
 
 }
+#endif
