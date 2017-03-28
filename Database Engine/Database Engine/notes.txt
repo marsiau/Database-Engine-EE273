@@ -1,5 +1,5 @@
 //ios::ate to delete previous info
-
+//TableStream.seekp(0, ios::);//go to the end of the file
 TODO create cell object with virtual functions
 LEARN Tamplates
 LEARN virtual functions
@@ -18,3 +18,15 @@ class
  LEARN Templates
 	Reading
 		https://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part
+
+    SELECT - extracts data from a database
+    UPDATE - updates data in a database
+    DELETE - deletes data from a database
+    INSERT INTO - inserts new data into a database
+    CREATE DATABASE - creates a new database
+    ALTER DATABASE - modifies a database
+    CREATE TABLE - creates a new table
+    ALTER TABLE - modifies a table
+    DROP TABLE - deletes a table
+    CREATE INDEX - creates an index (search key)
+    DROP INDEX - deletes an index

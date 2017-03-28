@@ -63,7 +63,11 @@ Table::Table(string OpTableName)
   }
 }
 //Table destructor
-//Table::~Table();
+Table::~Table();
+{
+  //Save table in a file
+  WRITE_TABLE_TF();
+}
 
 //Function to delete a table
 void Table::DROP_TABLE(string TableName)
@@ -78,7 +82,7 @@ void Table::WRITE_TABLE_TF()
   TableStream.open(TableName.c_str());
   if(!TableStream.is_open())
   {
-      cout<<"Error creating a table file\n";
+      cout<<"Error opening a table file\n";
   }
   else
   {
@@ -100,9 +104,37 @@ void Table::WRITE_TABLE_TF()
   }
 }
 
-#if 0
+#if 1
 list< vector<Cell> > Table::SELECT(vector<Cell> Collumns)
 {
+  vector<int> CollNum;
+  list< vector<*Cell> > Selection;
 
+  list< vector<Cell> >::iterator LItD; // LIt - List Iterator for TableData
+  vector<Cell>::iterator VItC; // VIt - Vector Iterator for Collumns
+  vector<Cell>::iterator VItN; // VIt - Vector Iterator for Names
+
+  for(VItC = Collumns.begin(); VItC != Collumns.end(); ++VItC)
+  {
+    bool found = 0,
+    for(int i = 0, VitN = TBCollumnNames.begin(); !found && VitN != TBCollumnNames.end(); ++VitN, i++)
+    //for(int i = 0, VItN = TBCollumnNames.begin(); VItN != TBCollumnNames.end(); ++VItN, i++)
+    if((*VitC) == (*VitN))
+    {
+      CollNum.push_back(i);
+      found  = 1;
+    }
+  }
+  for(LItD = TableData.begin(), LItD != TableData.end(); ++LItD)
+  {
+    //Create a temp vector to store selected row data
+    vector<Cell> temp;
+    for(int i = 0; i < size(CollNum); i++)
+    {
+      temp.push_back((*LItD)[i]);
+    }
+    //Push temp to Selection
+    Selection.push_back({temp});
+  }
+  return Selection;
 }
-#endif

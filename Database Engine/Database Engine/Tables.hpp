@@ -23,7 +23,7 @@ public:
 //Table constructor. Creating a new table
 Table(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes);
 //Table constructor. Opening an existing table
-Table(string TableName);
+Table(string OpTableName);
 //Table destructor
 ~Table();
 //Function to delete a table
