@@ -17,7 +17,7 @@ class Table
 private:
 string TableName;
 vector<Cell> TBCollumnNames;
-vector<Cell> TBCollumnTypes; //TODO Do we really need this? yup
+vector<Cell> TBCollumnTypes;
 list< vector<Cell> > TableData;
 public:
 //Table constructor. Creating a new table
@@ -27,8 +27,16 @@ Table(string OpTableName);
 //Table destructor
 ~Table();
 //Function to delete a table
-void DROP_TABLE(string TableName);
-//Function to write a series of values to the table file
+void DROP_TABLE();//TODO mbie move to Database?
+//Function to write a series of values to the table files
 void WRITE_TABLE_TF();
+//Function to select specific collumns of table. Returns list of vectors of cells
+list< vector<Cell> > SELECT(vector<Cell> Collumns);
+//Function to select specific collumns of table. Returns list of vectors of pointers
+list< vector<Cell*> >SELECTP(vector<Cell> Collumns);
+//Add new rows to the table
+void INSERT(vector<string> collumns, vector<Cell> values);
+//Add new rows to the table, w/o specifying the collumns
+void INSERT(vector<Cell> values);
 };
 #endif

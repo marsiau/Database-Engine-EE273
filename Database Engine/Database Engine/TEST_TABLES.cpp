@@ -5,20 +5,21 @@
 #include <vector>
 using namespace std;
 
+typedef string Cell;
+
 int main()
 {
-  string tablename;
+  string tablename1, tablename2;
   cout <<"enter tablename\n";
-  cin >> tablename;
+  cin >> tablename1;
+  cout <<"enter tablename\n";
+  cin >> tablename2;
+
+  vector<Cell> CollumnNames;
+  vector<Cell> CollumnTypes;
+  list< vector<Cell> > CollumnValues;
 
 
-  vector<string> CollumnNames;
-
-  vector<string> CollumnTypes;
-
-  list< vector<string> > CollumnValues;
-
-/*
   CollumnNames.push_back("Name1");
   CollumnNames.push_back("Name2");
   CollumnNames.push_back("Name3");
@@ -28,9 +29,14 @@ int main()
   CollumnValues.push_back({"Val11", "Val12", "Val13"});
   CollumnValues.push_back({"Val21", "Val22", "Val23"});
   CollumnValues.push_back({"Val31", "Val32", "Val33"});
-  table1.CREATE_TABLE(tablename, CollumnNames, CollumnTypes, CollumnValues);
-  table1.CREATE_TABLE(tablename, CollumnNames, CollumnTypes);
-  return 0;*/
+
+  Table table1(tablename1, CollumnNames, CollumnTypes);
+  Table table2(tablename2, CollumnNames, CollumnTypes);
+  table1.WRITE_TABLE_TF();
+
+  table2.WRITE_TABLE_TF();
+  table2.DROP_TABLE();
+  return 0;
 }
 /*
 g++ -std=c++11 -c TEST_TABLES.cpp -c Tables.cpp

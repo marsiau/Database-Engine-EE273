@@ -1,23 +1,14 @@
 //ios::ate to delete previous info
 //TableStream.seekp(0, ios::);//go to the end of the file
-TODO create cell object with virtual functions
-LEARN Tamplates
-LEARN virtual functions
-//instead of union, this could be used:
+//TODO create cell object with virtual functions
+//LEARN Tamplates
+//LEARN virtual functions
+// <map> instead of list of vectors?
+
+
 http://www.cplusplus.com/doc/tutorial/polymorphism/
-
-
-class
-  DATABASE
-    create table
-  TABLE
-
-  CELL
-
-
- LEARN Templates
-	Reading
-		https://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part
+https://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part
+http://stackoverflow.com/questions/2395275/how-to-navigate-through-a-vector-using-iterators-c
 
     SELECT - extracts data from a database
     UPDATE - updates data in a database
@@ -30,3 +21,14 @@ class
     DROP TABLE - deletes a table
     CREATE INDEX - creates an index (search key)
     DROP INDEX - deletes an index
+
+    Operators in The WHERE Clause:
+    =	Equal
+    <>	Not equal. Note: In some versions of SQL this operator may be written as !=
+    >	Greater than
+    <	Less than
+    >=	Greater than or equal
+    <=	Less than or equal
+    BETWEEN	Between an inclusive range
+    LIKE	Search for a pattern
+    IN	To specify multiple possible values for a column

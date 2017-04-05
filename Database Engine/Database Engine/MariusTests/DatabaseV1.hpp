@@ -1,3 +1,4 @@
+
 #ifndef DATABASE_HPP_
 #define DATABASE_HPP_
 
@@ -13,10 +14,10 @@ class Database
 {
 private:
   string DBName;
-  <vector> TableNames;
-  <list> Tables;
+  vector<string> TableNames;
+  list<Table> Tables;
 public:
   Database();
   ~Database();
-
+};
 #endif
