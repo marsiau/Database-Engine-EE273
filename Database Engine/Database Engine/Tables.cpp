@@ -5,6 +5,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <iomanip>
 #include <cstdio>
 
 using namespace std;
@@ -22,6 +23,12 @@ vector<Cell> ReadRow(ifstream &InputStream)
   }
   InputStream.ignore(1);//To skip the \n
   return Row;
+}
+//Generate a string of characters of size "size"
+string genString(int size, char character)
+{
+  string temp(size, character);
+  return temp;
 }
 //End
 
@@ -97,8 +104,9 @@ void Table::WRITE_TABLE_TF()
   }
   else
   {
-    //TODO following is not working
     //Pushing table collumn types and names to the data list
+    //TODO THIS IS BAD, really bad
+    list< vector<Cell> > TableData = this->TableData;
     TableData.push_front(TBCollumnTypes);
     TableData.push_front(TBCollumnNames);
     //Writing the TableData and collumn types&names to file
@@ -128,7 +136,7 @@ list< vector<Cell> > Table::SELECT(vector<Cell> Collumns)
   {
     bool found = false;
     int i = 0;
-    for(VItN = TBCollumnNames.begin(); !found && VItN < TBCollumnNames.end(); ++VItN)
+    for(VItN = TBCollumnNames.begin(); !found && VItN != TBCollumnNames.end(); ++VItN)
     {
       if((*VItC) == (*VItN))
       {
@@ -164,11 +172,11 @@ list< vector<Cell*> > Table::SELECTP(vector<Cell> Collumns)
   list< vector<Cell*> > Selection;
   vector<Cell>:: iterator VItC; // VIt - Vector Iterator for Collumns
   vector<Cell>:: iterator VItN; // VIt - Vector Iterator for Names
-  for(VItC = Collumns.begin(); VItC < Collumns.end(); ++VItC)
+  for(VItC = Collumns.begin(); VItC != Collumns.end(); ++VItC)
   {
     bool found = false;
     int i = 0;
-    for(VItN = TBCollumnNames.begin(); !found && VItN < TBCollumnNames.end(); ++VItN)
+    for(VItN = TBCollumnNames.begin(); !found && VItN != TBCollumnNames.end(); ++VItN)
     {
       if((*VItC) == (*VItN))
       {
@@ -233,6 +241,33 @@ void Table::INSERT(vector<Cell> values)
   TableData.push_back(values);
 }
 
+void Table::PRINT()
+{
+  const int width = 20;
+  string linelim((width + 1) * TBCollumnNames.size(),'-');
+  list< vector<Cell> >:: iterator LIt; // LIt - List iterator for Rows
+  vector<Cell>:: iterator VIt; // VIt - Vector iterator for Collumns
+
+  //cout << left << setw(width) << setfill(separator) << t;
+  cout<<endl<<linelim<<endl;
+  for(VIt = TBCollumnNames.begin(); VIt != TBCollumnNames.end(); ++VIt)
+  {
+    //Creating centered names.
+    string temp = genString((width-(*VIt).size())/2,' ') + (*VIt);
+    cout<<left<<setw(width)<<temp<<"|";
+    //It's disgraceful, but it works right? :D
+  }
+  cout<<endl<<linelim<<endl;
+
+  for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
+  {
+    for(VIt = (*LIt).begin(); VIt != (*LIt).end(); ++VIt)
+    {
+      cout<<right<<setw(width)<<(*VIt)<<"|";
+    }
+    cout<<endl<<linelim<<endl;
+  }
+}
 
 #if 0
 //TODO TEST

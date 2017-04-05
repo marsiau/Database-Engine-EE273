@@ -38,5 +38,7 @@ list< vector<Cell*> >SELECTP(vector<Cell> Collumns);
 void INSERT(vector<string> collumns, vector<Cell> values);
 //Add new rows to the table, w/o specifying the collumns
 void INSERT(vector<Cell> values);
+//Print the table
+void PRINT();
 };
 #endif
