@@ -16,6 +16,7 @@ class Table
 {
 private:
 string TableName;
+//TODO Why vector of cells for names and types?
 vector<Cell> TBCollumnNames;
 vector<Cell> TBCollumnTypes;
 list< vector<Cell> > TableData;
@@ -31,13 +32,15 @@ void DROP_TABLE();//TODO mbie move to Database?
 //Function to write a series of values to the table files
 void WRITE_TABLE_TF();
 //Function to select specific collumns of table. Returns list of vectors of cells
-list< vector<Cell> > SELECT(vector<Cell> Collumns);
+list< vector<Cell> > SELECT(vector<Cell> CollumnNames);
 //Function to select specific collumns of table. Returns list of vectors of pointers
-list< vector<Cell*> >SELECTP(vector<Cell> Collumns);
+list< vector<Cell*> >SELECTP(vector<Cell> CollumnNames);
 //Add new rows to the table
 void INSERT(vector<string> collumns, vector<Cell> values);
 //Add new rows to the table, w/o specifying the collumns
 void INSERT(vector<Cell> values);
+//Adds a list of new rows. TODO NOT SAFE
+void INSERT(list<vector<Cell> >values);
 //Print the table
 void PRINT();
 };

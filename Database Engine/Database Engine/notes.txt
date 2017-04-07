@@ -6,9 +6,18 @@
 // <map> instead of list of vectors?
 
 
+http://en.cppreference.com/w/cpp/language/auto //check filetype
 http://www.cplusplus.com/doc/tutorial/polymorphism/
 https://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part
 http://stackoverflow.com/questions/2395275/how-to-navigate-through-a-vector-using-iterators-c
+
+Advanced features:
+ class inheritance
+ separation of interfaces from implementation
+ operator overloading
+ pointers to build associations
+ references
+ containers (vector, lists or both)
 
     SELECT - extracts data from a database
     UPDATE - updates data in a database

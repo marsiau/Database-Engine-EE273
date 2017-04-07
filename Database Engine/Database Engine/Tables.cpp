@@ -12,7 +12,35 @@ using namespace std;
 typedef string Cell; //supposedly same thing as: using Cell = string;
 
 //Auxiliary functions
-vector<Cell> ReadRow(ifstream &InputStream)
+//Checks if filename has ".txt" and changes it dpending on chng
+string chkType(string InStr, bool chng)//TESTED
+{
+  int InSize = InStr.size();
+  string strEnd = {InStr[InSize-4], InStr[InSize-3], InStr[InSize-2], InStr[InSize-1]};
+  if(strEnd == ".txt")
+  {
+    if(chng)
+    {return InStr;}//Don't change
+    else
+    {return InStr.erase(InStr.size() - 4);}//Remove ".txt"
+  }
+  else
+  {
+    if(chng)
+    {return InStr += ".txt";}//Add ".txt"
+    else
+    {return InStr;}//Don't change
+  }
+}
+//Check if file exists
+//From http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
+inline bool exists_test (const string& name)//TESTED
+{
+    ifstream f(name.c_str());
+    return f.good();
+}
+//Read a row from data stream
+vector<Cell> ReadRow(ifstream &InputStream)//TESTED
 {
   vector<Cell> Row;
   string TEMP;
@@ -24,8 +52,18 @@ vector<Cell> ReadRow(ifstream &InputStream)
   InputStream.ignore(1);//To skip the \n
   return Row;
 }
+//Write a row vector to the file
+void WriteRow(ofstream &OutputStream, vector<Cell> Row)//TESTED
+{
+  vector<Cell>::iterator VIt; // VIt - Vector Iterator
+  for(VIt = Row.begin(); VIt != Row.end(); ++VIt)
+  {
+    OutputStream << (*VIt) << ',';
+  }
+  OutputStream << endl;
+}
 //Generate a string of characters of size "size"
-string genString(int size, char character)
+string genString(int size, char character)//TESTED
 {
   string temp(size, character);
   return temp;
@@ -33,43 +71,42 @@ string genString(int size, char character)
 //End
 
 //Table constructor. Creating a new table
-Table::Table(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)
+Table::Table(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)//TESTED
 {
-  //TODO check if contains .txt
-  TableName = NewTableName;
+  //TODO check if does not exist
+  TableName = chkType(NewTableName, 0);
   TBCollumnNames = CollumnNames;
   TBCollumnTypes = CollumnTypes;
   TableData;
 }
 
 //Table constructor. Opening an existing table
-Table::Table(string OpTableName)
+Table::Table(string OpTableName)//TESTED
 {
-  TableName = OpTableName;
-  ifstream TableStream;
-  //TODO check if table exists
-  string FileName = TableName + ".txt"; //Add the file type
-  TableStream.open(FileName);
+  TableName = chkType(OpTableName, 0);
+  string FileName = chkType(OpTableName, 1);
+  if(exists_test(FileName))
+  {
+    ifstream TableStream;
+    TableStream.open(FileName);
     if(!TableStream.is_open())
-  {
-      cout<<"Error creating a table file\n";
-  }
-  else
-  {
-    //Read and store Collumn Names, Collumn Types and Table Data
-    TBCollumnNames;
-    TBCollumnTypes;
-    TableData;
-    string TEMP;
-
-    TBCollumnNames = ReadRow(TableStream);//Retrieve Collumn Names
-    TBCollumnTypes = ReadRow(TableStream);//Retrieve Collumn Types
-    //Retrieve Table Data
-    while(!TableStream.eof())
     {
-      TableData.push_back(ReadRow(TableStream));
+      cout<<"Error opening a table file\n";
+    }
+    else
+    {
+      TBCollumnNames = ReadRow(TableStream);//Retrieve Collumn Names
+      TBCollumnTypes = ReadRow(TableStream);//Retrieve Collumn Types
+      //Retrieve Table Data
+      //while(!TableStream.eof())//TODO not working
+      while(TableStream.peek() != EOF)
+      {
+        TableData.push_back(ReadRow(TableStream));
+      }
+      TableStream.close();
     }
   }
+  else{cout<<"ERROR\nFile "<<FileName<<" does not exist\n";}
 }
 
 //Table destructor
@@ -80,10 +117,10 @@ Table::~Table()
 }
 
 //Function to delete a table
-void Table::DROP_TABLE()
+void Table::DROP_TABLE()//TODO Working but needs to be moved, the table vectors cleaned
 {
   //From http://www.cplusplus.com/reference/cstdio/remove/
-  string FileName = TableName + ".txt"; //Add the file type
+  string FileName = chkType(TableName, 1);//Add the file type
   if( remove(FileName.c_str()) != 0 )
     perror( "Error deleting file" );
   else
@@ -91,12 +128,12 @@ void Table::DROP_TABLE()
 }
 
 //Function to write a series of values to the table file
-void Table::WRITE_TABLE_TF()
+void Table::WRITE_TABLE_TF()//TESTED
 {
-  //ios::trunc - 	If the file is opened for output operations and it already existed,
   //its previous content is deleted and replaced by the new one.
-  string FileName = TableName + ".txt"; //Add the file type
+  string FileName = chkType(TableName, 1); //Add the file type
   ofstream TableStream;
+  //ios::trunc - 	If the file is opened for output operations and it already existed,
   TableStream.open(FileName, ios::trunc);
   if(!TableStream.is_open())
   {
@@ -104,35 +141,28 @@ void Table::WRITE_TABLE_TF()
   }
   else
   {
-    //Pushing table collumn types and names to the data list
-    //TODO THIS IS BAD, really bad
-    list< vector<Cell> > TableData = this->TableData;
-    TableData.push_front(TBCollumnTypes);
-    TableData.push_front(TBCollumnNames);
-    //Writing the TableData and collumn types&names to file
+    //Writing Collumn names and types to the file
+    WriteRow(TableStream, TBCollumnNames);
+    WriteRow(TableStream, TBCollumnTypes);
+    //Writing the TableData
     list< vector<Cell> >::iterator LIt; // LIt - List Iterator
-    vector<Cell>::iterator VIt; // VIt - Vector Iterator
     for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
     {
-      for(VIt = LIt->begin(); VIt != LIt->end(); ++VIt)
-      {
-        TableStream << (*VIt) << ',';
-      }
-      TableStream << endl;
+      WriteRow(TableStream, (*LIt));
     }
     TableStream.close();
   }
 }
-//TODO TEST
 
-list< vector<Cell> > Table::SELECT(vector<Cell> Collumns)
+
+list< vector<Cell> > Table::SELECT(vector<Cell> CollumnNames)
 {
   vector<int> CollNum;
   list< vector<Cell> > Selection;
   //TODO this could be reused
   vector<Cell>:: iterator VItC; // VIt - Vector Iterator for Collumns
   vector<Cell>:: iterator VItN; // VIt - Vector Iterator for Names
-  for(VItC = Collumns.begin(); VItC < Collumns.end(); ++VItC)
+  for(VItC = CollumnNames.begin(); VItC < CollumnNames.end(); ++VItC)
   {
     bool found = false;
     int i = 0;
@@ -166,13 +196,13 @@ list< vector<Cell> > Table::SELECT(vector<Cell> Collumns)
 }
 //TODO TEST
 //Returns list of vectors of pointers to Cell
-list< vector<Cell*> > Table::SELECTP(vector<Cell> Collumns)
+list< vector<Cell*> > Table::SELECTP(vector<Cell> CollumnNames)
 {
   vector<int> CollNum;
   list< vector<Cell*> > Selection;
   vector<Cell>:: iterator VItC; // VIt - Vector Iterator for Collumns
   vector<Cell>:: iterator VItN; // VIt - Vector Iterator for Names
-  for(VItC = Collumns.begin(); VItC != Collumns.end(); ++VItC)
+  for(VItC = CollumnNames.begin(); VItC != CollumnNames.end(); ++VItC)
   {
     bool found = false;
     int i = 0;
@@ -206,64 +236,82 @@ list< vector<Cell*> > Table::SELECTP(vector<Cell> Collumns)
 }
 
 //Add new rows to the table
-void Table::INSERT(vector<string> collumns, vector<Cell> values)
+void Table::INSERT(vector<Cell> collumns, vector<Cell> values)//TESTED
 {
-
-  vector<string>::iterator CollIt = collumns.begin();
   //TBCollumnNames iterator declared here as the collumns should be given in order
   //thus this is only to skip collumns required to be emty
-  vector<string>::iterator TBCollIt = TBCollumnNames.begin();
-  vector<Cell> tempvec;
+  vector<Cell>::iterator TBCollIt = TBCollumnNames.begin();
+  vector<Cell>::iterator CollIt = collumns.begin();
+  vector<Cell> Row;
 
-  bool found;
-  for(int i = 0; CollIt != collumns.end(); ++i, ++CollIt)
+  int i = 0;
+  while(CollIt != collumns.end())
   {
-    found = false;
-    while(TBCollIt != TBCollumnNames.end())
+    bool found = false;
+    while(TBCollIt != TBCollumnNames.end() && !found)
     {
       if((*CollIt) == (*TBCollIt))
       {
-        tempvec.push_back(values[i]);
+        Row.push_back(values[i]);
         found = true;
       }
       else
       {
-        ++TBCollIt;
+        Row.push_back("");
       }
+    ++TBCollIt;
     }
-    //TODO check if everything went well
+    i++;
+    ++CollIt;
   }
-  TableData.push_back(tempvec);
+  TableData.push_back(Row);
 }
 //Add new rows to the table, without specifying the collumns
-void Table::INSERT(vector<Cell> values)
+void Table::INSERT(vector<Cell> values)//TESTED
 {
-  TableData.push_back(values);
+  TableData.push_back({values});
 }
 
-void Table::PRINT()
+//Adds a list of new rows. TODO NOT SAFE. but works
+void Table::INSERT(list<vector<Cell> >values)//TESTED
+{
+  TableData.splice(TableData.end(), values);
+}
+
+//Print the table
+void Table::PRINT()//TESTED
 {
   const int width = 20;
   string linelim((width + 1) * TBCollumnNames.size(),'-');
   list< vector<Cell> >:: iterator LIt; // LIt - List iterator for Rows
   vector<Cell>:: iterator VIt; // VIt - Vector iterator for Collumns
 
-  //cout << left << setw(width) << setfill(separator) << t;
+  int Collumns = 0; //To record how many collumns there are
+  int pCollumns; //Printed collumns
+  //Print collumn names
   cout<<endl<<linelim<<endl;
   for(VIt = TBCollumnNames.begin(); VIt != TBCollumnNames.end(); ++VIt)
   {
     //Creating centered names.
     string temp = genString((width-(*VIt).size())/2,' ') + (*VIt);
     cout<<left<<setw(width)<<temp<<"|";
-    //It's disgraceful, but it works right? :D
+    //TODO It's disgraceful, but it works right? :D
+    Collumns++;
   }
   cout<<endl<<linelim<<endl;
 
   for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
   {
+    pCollumns = 0;
     for(VIt = (*LIt).begin(); VIt != (*LIt).end(); ++VIt)
     {
       cout<<right<<setw(width)<<(*VIt)<<"|";
+      pCollumns++;
+    }
+    //If there is less data then collumns, print the borders
+    for(int i = 0; i != (Collumns - pCollumns); i++)
+    {
+      cout<<genString(width, ' ')<<"|";
     }
     cout<<endl<<linelim<<endl;
   }
@@ -275,4 +323,5 @@ void Table::PRINT()
 list< vector<Cell*> > Table::SELECT_WHERE(vector<Cell> Collumns, vector<string> Comparator, vector<Cell> FilterCond)
 {
 }
+//Sorting using inbuild vector/list algorithms //not going to work on list of objects
 #endif
