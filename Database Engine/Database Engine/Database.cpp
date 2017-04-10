@@ -1,12 +1,17 @@
+//TODO mbie move all additional functions into new file?
 #include <fstream>
 #include <string>
-#include <list>
+//#include <list>
 #include <vector>
-#include "Tables.hpp"
+#include <map>
+#include "Table.hpp"
 #include "Database.hpp"
 using namespace std;
-//Auxiliary functions
-//TODO mbie move all additional functions into new file?
+
+typedef map<string, Table*> TableMap;
+typedef pair<string, Table*> TableMapPair;
+
+//-------------------- Auxiliary functions --------------------
 //Checks if filename has ".txt" and changes it dpending on chng
 string chkType(string InStr, bool chng)//TESTED
 {
@@ -34,15 +39,43 @@ inline bool exists_test (const std::string& name)
     ifstream f(name.c_str());
     return f.good();
 }
-//END
+//Deletes a file
+void deleteFile(string FileName)
+{
+  //From http://www.cplusplus.com/reference/cstdio/remove/
+  string FileName = chkType(FileName, 1);//Add the file type
+  if( remove(FileName.c_str()) != 0 )
+    perror( "Error deleting file" );
+    else
+    puts( "File successfully deleted" );
+}
+//-------------------- Auxiliary functions END --------------------
 
 //Create an emty database
 Database::Database(string Name)
 {
   DBName = chkType(Name, 0);
 }
+
 //Database destructor
-//Database::~Database();
+Database::~Database()
+{
+  //If database is not emty, save it
+  if(!MapOfTables.emty())
+  {
+    //Iterate through map and destruct Table objects
+    TableMap::iterator It = MapOfTables.begin();
+    while(It != MapOfTables.end())
+    {
+      (It->second).~Table();
+      ++It;
+    }
+    //Clear the map contents
+    MapOfTables.clear();
+  }
+  //If it is emty then there is nothing to be cleared
+}
+
 //Open an existing Database
 void Database::OPEN()
 {
@@ -53,36 +86,52 @@ void Database::OPEN()
     if(!DBStream.is_open())
     {
       string TableName;
-      //Read all the table names in the database
       while(DBStream.peek() != '\n')
       {
+        //Read all the table names in the database
         getline(DBStream, TableName, ',');
         TableNames.push_back(TableName);
-        //Table TempTable(TableName);//Open the table
-        //Tables.push_back(TempTable);
-        Tables.push_back(Table TempTable(TableName));
+        //new with non trivial constructor http://www.drdobbs.com/cpp/calling-constructors-with-placement-new/232901023
+        Table* = pTable new (TableName);
+        if(!pTable){cout<<"ERROR allocating the Table";}
+        MapOfTables.insert(make_pair(TableName, pTable));
       }
     }
   }
   else{cout<<"Database does not exist\n";}
 }
 
-#if 0
-//Return required table
-Table* Database::PickTable(string TableName)
+//Delete database
+void Database::DROP_DATABASE()
 {
-  Table* ReqTable;//Required table
-  bool found = false;
-  list<string>::iterator LIt = Tables.begin();
-  while(LIt != Tables.end() && !found)
-  (
-    if(TableName == (LIt*)->TableName)
-    {
-      ReqTable = &(LIt*);
-      found = true;
-    }
-    ++LIt;
-  )
-  return
+  TableMap::iterator It = MapOfTables.begin();
+  while(It != MapOfTables.end())//TODO is it really != or <=??/
+  {
+    //Destruct the Table object
+    (It->second).~Table();
+    //Delete the table file
+    deleteFile(It->first);
+    ++It;
+  }
+  //Delete the map contents
+  MapOfTables.clear();
 }
-#endif
+
+//Function to create a new table
+void CREATE_TABLE(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)
+{
+  Table* = pTable new (string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes);
+  if(!pTable){cout<<"ERROR allocating the Table";}
+  MapOfTables.insert(make_pair(NewTableName), pTable);
+}
+
+//Function to delete a table
+void Database::DROP_TABLE(string TableName)
+{
+  //Destruct the Table object
+  MapOfTables.find(TableName)->second.~Table();
+  //Remove data from the map container
+  MapOfTables.erase(TableName);
+  //Delete any remaining files
+  deleteFile(TableName);
+}
