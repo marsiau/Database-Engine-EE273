@@ -15,7 +15,6 @@ class Database
 {
 private:
   string DBName;
-  //vector<string> TableNames;//TODO do we need this?
   //use maps, allows to search by key("TableName"), no need to iterate through vector to find the correct name
   //http://thispointer.com/stdmap-tutorial-part-1-usage-detail-with-examples/
   map<string, Table*> MapOfTables;
@@ -30,7 +29,8 @@ public:
   //Function to create a new table
   void CREATE_TABLE(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes);
   //Function to delete a table
-  void Database::DROP_TABLE(string TableName);
+  void DROP_TABLE(string TableName);
+  //Funciton to delete database
   void DROP_DATABASE();
 };
 #endif

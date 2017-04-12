@@ -1,5 +1,6 @@
 //TODO remove all cout statements? log file?
-#include "Tables.hpp"
+#include "Table.hpp"
+#include "Auxilary.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -11,34 +12,7 @@
 using namespace std;
 typedef string Cell; //supposedly same thing as: using Cell = string;
 
-//-------------------- Auxiliary functions --------------------
-//Checks if filename has ".txt" and changes it dpending on chng
-string chkType(string InStr, bool chng)//TESTED
-{
-  int InSize = InStr.size();
-  string strEnd = {InStr[InSize-4], InStr[InSize-3], InStr[InSize-2], InStr[InSize-1]};
-  if(strEnd == ".txt")
-  {
-    if(chng)
-    {return InStr;}//Don't change
-    else
-    {return InStr.erase(InStr.size() - 4);}//Remove ".txt"
-  }
-  else
-  {
-    if(chng)
-    {return InStr += ".txt";}//Add ".txt"
-    else
-    {return InStr;}//Don't change
-  }
-}
-//Check if file exists
-//From http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
-inline bool exists_test (const string& name)//TESTED
-{
-    ifstream f(name.c_str());
-    return f.good();
-}
+//-------------------- Internal functions --------------------
 //Read a row from data stream
 vector<Cell> ReadRow(ifstream &InputStream)//TESTED
 {
@@ -68,10 +42,10 @@ string genString(int size, char character)//TESTED
   string temp(size, character);
   return temp;
 }
-//-------------------- Auxiliary functions END --------------------
+//-------------------- Internal functions END --------------------
 
 //Table constructor
-Table::Table();//For temporary table
+//Table::Table();//For temporary table
 
 //Creating a new table
 Table::Table(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)//

@@ -5,6 +5,10 @@
 //LEARN virtual functions
 // <map> instead of list of vectors?
 
+Regex: http://stackoverflow.com/questions/9083405/how-do-i-parse-user-input-from-the-standard-input-stream
+	http://www.cplusplus.com/reference/regex/
+	https://msdn.microsoft.com/en-us/library/a9z6549f.aspx
+
 Rant about maps:
 +could make it simple to do stuff with tables as no need to find the correct one, use table name as key value
 -Both table object and the map contains TableName which is redundant at this point//Remove TableName from the object, could be annoyng

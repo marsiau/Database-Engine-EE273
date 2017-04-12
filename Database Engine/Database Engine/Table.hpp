@@ -23,9 +23,9 @@ public:
 //Default constructor
 Table();
 //Constructing and creating a new table
-TABLE(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes);
+Table(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes);
 //Constructing and opening an existing table
-TABLE(string OpTableName);
+Table(string OpTableName);
 //Table destructor
 ~Table();
 //Function to write a series of values to the table files
