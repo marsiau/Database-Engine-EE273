@@ -42,6 +42,30 @@ string genString(int size, char character)//TESTED
   string temp(size, character);
   return temp;
 }
+//Select collumns
+vector<int> SelColl(vector<Cell> CollumnNames)
+{
+  vector<int> CollNum;
+  vector<Cell>:: iterator VItC; // VIt - Vector Iterator for Collumns
+  vector<Cell>:: iterator VItN; // VIt - Vector Iterator for Names
+  for(VItC = CollumnNames.begin(); VItC < CollumnNames.end(); ++VItC)
+  {
+    bool found = false;
+    int i = 0;
+    for(VItN = TBCollumnNames.begin(); !found && VItN != TBCollumnNames.end(); ++VItN)
+    {
+      if((*VItC) == (*VItN))
+      {
+        CollNum.push_back(i);
+        found  = true;
+      }
+      else
+      {
+        i++;
+      }
+    }
+  }
+}
 //-------------------- Internal functions END --------------------
 
 //Table constructor
@@ -290,10 +314,27 @@ void Table::PRINT()//TESTED
 }
 
 #if 0
-//TODO TEST
 //The WHERE clause is not only used in SELECT statement, it is also used in UPDATE, DELETE statement, etc.!
-list< vector<Cell*> > Table::SELECT_WHERE(vector<Cell> Collumns, vector<string> Comparator, vector<Cell> FilterCond)
+list< vector<Cell*> > Table::SELECT_WHERE(vector<Cell> Collumns, vector<Cell> FilterCond)
 {
+  list< vector<Cell*> > Selection;
+
+  vector<int> CollNum = SelColl(Collumns);
+  vector<int>::iterator CIt; //Cell vector iterators
+  vector<Cell> >::iterator FIt; //Filter condition data iterator
+  list< vector<Cell> >::iterator LIt; //Data list iterator
+
+  for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
+  {
+    for(CIt = CollNum.begin(), FIt = Filter.begin(); CIt != CollNum.end(); ++CIt, ++FIt)
+    {
+      if( (*LIt)[(*VIt)] == (*FIt) )
+      {
+        Selection.push_back(        )
+      }
+    }
+  }
+
 }
-//Sorting using inbuild vector/list algorithms //not going to work on list of objects
+
 #endif
