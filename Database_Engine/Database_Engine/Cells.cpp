@@ -1,13 +1,13 @@
 #include "Cells.hpp"
 
-template <class T>
-class cell
-{
-	private:
-		T data;
+// template <class T>
+// class cell
+// {
+// 	private:
+// 		T data;
 
-	public: 
-}
+// 	public: 
+// };
 
 
 

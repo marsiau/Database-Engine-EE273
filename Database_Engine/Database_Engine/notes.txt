@@ -1,0 +1,20 @@
+//ios::ate to delete previous info
+
+TODO create cell object with virtual functions
+LEARN Tamplates
+LEARN virtual functions
+//instead of union, this could be used:
+http://www.cplusplus.com/doc/tutorial/polymorphism/
+
+
+class
+  DATABASE
+    create table
+  TABLE
+
+  CELL
+
+
+ LEARN Templates
+	Reading
+		https://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part

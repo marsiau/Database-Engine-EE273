@@ -25,17 +25,18 @@ AbsCell methods
 using namespace std;
 
 // Template Cell class, can accept any data type.
-template<class T> class Cell
+template <class T> 
+class Cell
 {
 public:
-
-  // Overriding comparison functions.
-	Cell<T>& operator==(const Cell<T>& classObj);
-  Cell<T>& operator!=(const Cell<T>& classObj);
-  Cell<T>& operator<(const Cell<T>& classObj);
-  Cell<T>& operator>(const Cell<T>& classObj);
-  Cell<T>& operator<=(const Cell<T>& classObj);
-  Cell<T>& operator>=(const Cell<T>& classObj);
+  
+  // // Overriding comparison functions.
+	// Cell<T>& operator==(const Cell<T>& classObj);
+  // Cell<T>& operator!=(const Cell<T>& classObj);
+  // Cell<T>& operator<(const Cell<T>& classObj);
+  // Cell<T>& operator>(const Cell<T>& classObj);
+  // Cell<T>& operator<=(const Cell<T>& classObj);
+  // Cell<T>& operator>=(const Cell<T>& classObj);
 
 private:
   // Contents variable holds the data within the cell.
