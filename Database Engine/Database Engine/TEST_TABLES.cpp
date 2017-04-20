@@ -1,4 +1,4 @@
-#include "Tables.hpp"
+#include "Table.hpp"
 #include <iostream>
 #include <string>
 #include <list>
@@ -7,7 +7,7 @@ using namespace std;
 
 typedef string Cell;
 
-int main()
+int main2()
 {
   string tablename1, tablename2 = "tb2";
   cout <<"enter tablename\n";
