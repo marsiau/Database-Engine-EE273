@@ -26,11 +26,11 @@ public:
   ~Database();
   //Function to open an existing database
   void OPEN();
+  //Funciton to delete database
+  void DROP_DATABASE();
   //Function to create a new table
   void CREATE_TABLE(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes);
   //Function to delete a table
   void DROP_TABLE(string TableName);
-  //Funciton to delete database
-  void DROP_DATABASE();
 };
 #endif

@@ -66,6 +66,39 @@ vector<int> SelColl(vector<Cell> CollumnNames)
     }
   }
 }
+//Compare Cell value to filter value
+bool Compare(Cell CellValue,char FilterCond, Cell FilterVal)
+{
+  switch(FilterCond)
+  {
+    case '=' :
+      if(CellValue = FilterVal) {return 1;}
+      else {return 0;}
+      break;
+      //TODO Fix after Cells object is created
+      /*
+    case '<' :
+      //if(CellValue < FilterVal) {return 1;}
+      else {return 0;}
+      break;
+    case '>' :
+      if(CellValue > FilterVal) {return 1;}
+      else {return 0;}
+      break;
+    case '<=' :
+      if(CellValue <= FilterVal) {return 1;}
+      else {return 0;}
+      break;
+    case '>=' :
+      if(CellValue >= FilterVal) {return 1;}
+      else {return 0;}
+      break;
+      */
+    default:
+      return 0;
+      break
+  }
+}
 //-------------------- Internal functions END --------------------
 
 //Table constructor
@@ -116,9 +149,8 @@ Table::Table(string OpTableName)//TESTED
 //Table destructor
 Table::~Table()
 {
-  //Save table in a file
-  // WRITE_TABLE_TF(); //TODO couses problems for temp tables figure out a different way
-  if(TableName != "")//If table has a name write it to file. If not then its temporary or deleted
+  //If exists, save table in a file
+  if(TableName != "")
   {
     WRITE_TABLE_TF();
   }
@@ -313,28 +345,90 @@ void Table::PRINT()//TESTED
   }
 }
 
-#if 0
-//The WHERE clause is not only used in SELECT statement, it is also used in UPDATE, DELETE statement, etc.!
-list< vector<Cell*> > Table::SELECT_WHERE(vector<Cell> Collumns, vector<Cell> FilterCond)
+//Returns list of pointers to rows where conditions are met
+list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
 {
-  list< vector<Cell*> > Selection;
+  list< vector<Cell>* > Selection;
 
   vector<int> CollNum = SelColl(Collumns);
-  vector<int>::iterator CIt; //Cell vector iterators
   vector<Cell> >::iterator FIt; //Filter condition data iterator
   list< vector<Cell> >::iterator LIt; //Data list iterator
 
   for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
   {
-    for(CIt = CollNum.begin(), FIt = Filter.begin(); CIt != CollNum.end(); ++CIt, ++FIt)
+    vector<int>::iterator CIt; //Cell vector iterators
+    for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt)
     {
-      if( (*LIt)[(*VIt)] == (*FIt) )
+      //To go through all filter conditions/values
+      for(int i = 0; i != FilterCond.size() ;++i)
       {
-        Selection.push_back(        )
+        for(int ii = 0; ii != (*i).size() ;++ii)
+        {
+          if(Compare((*(LIt)[(*CIt)]), FilterCond[i][ii], FilterVal[i][ii]))
+          {
+            Selection.push_back(&(*LIt));//Push back address of a cell at Row - LIt and collumn CIt
+            //Selection.push_back(&(*(LIt)[(*CIt)]));
+          }
+        }
+      }
+    }
+  }
+  return Selection;
+}
+
+//Changes/updates specific collumns
+void Table::UPDATE(vector<Cell> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+{
+  list< vector<Cell>* > pSelRows = this->WHERE(Collumns, FilterCond, FilterVal);
+  vector<int> CollNum = SelColl(UPCollumns);
+  //Iterators
+  list< vector<Cell>* >::iterator SRIt;
+  vector<int>::iterator CNIt;
+  vector<Cell>::iterator UVIt;
+
+  for(SRIt = pSelRows.begin(); SRIt != pSelRows.end(); ++SRIt)
+  {
+    for(CNIt = CollNum.begin(), UVIt = UpVal.begin(); CNIt != CollNum.end() && UVIt != UpVal.end(); ++CNIt, ++ UVIt)
+    {
+      (*(*SRIt))[(*CNIt)] = (*UVIt);
+    }
+  }
+}
+
+//Deletes all data stored in table
+void Table::DELETE()
+{
+  TableData.erase(TableData.begin(); TableData.end());
+}
+//Deletes specific rows of table data
+void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+{
+  vector<int> CollNum = SelColl(Collumns);
+  vector<Cell> >::iterator FIt; //Filter condition data iterator
+  list< vector<Cell> >::iterator LIt; //Data list iterator
+
+  for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
+  {
+    vector<int>::iterator CIt; //Cell vector iterators
+    for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt)
+    {
+      //To go through all filter conditions/values
+      for(int i = 0; i != FilterCond.size() ;++i)
+      {
+        for(int ii = 0; ii != (*i).size() ;++ii)
+        {
+          if(Compare((*(LIt)[(*CIt)]), FilterCond[i][ii], FilterVal[i][ii]))
+          {
+            //http://www.cplusplus.com/reference/list/list/erase/
+            TableData.erase(LIt);
+            //TODO or LIt = TableData.erase(LIt);?
+          }
+        }
       }
     }
   }
 
 }
+#if 0
 
 #endif
