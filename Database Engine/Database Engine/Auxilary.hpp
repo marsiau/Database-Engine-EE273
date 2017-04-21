@@ -2,6 +2,8 @@
 #define AUXILARY_HPP_
 
 #include <string>
+#include <vector>
+#include <iostream>
 #include <fstream>
 
 using namespace std;
@@ -13,5 +15,7 @@ string chkType(string InStr, bool chng);//TESTED
 bool exists_test (const std::string& name);
 //Deletes a file
 void deleteFile(string iFileName);
+// Prints a vector of strings to the console.
+void printStringVector(vector<string> &v);
 
 #endif

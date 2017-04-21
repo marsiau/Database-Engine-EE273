@@ -1,5 +1,7 @@
 #include "Auxilary.hpp"
 #include <string>
+#include <vector>
+#include <iostream>
 #include <fstream>
 
 using namespace std;
@@ -40,4 +42,15 @@ void deleteFile(string iFileName)
     perror( "Error deleting file" );
     else
     puts( "File successfully deleted" );
+}
+
+// Print a vector of strings to the console window.
+void printStringVector(vector<string> &v)
+{
+  vector<string>::iterator it;
+  for (it=v.begin(); it<v.end(); it++)
+  {
+    cout << ' ' << *it;
+    cout << '\n';
+  }
 }

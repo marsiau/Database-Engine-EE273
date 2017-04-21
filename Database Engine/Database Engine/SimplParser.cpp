@@ -2,6 +2,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Auxilary.hpp"
+#include "Table.hpp"
+#include "Database.hpp"
 /*
 Commands needed
 
@@ -13,82 +16,127 @@ UPDATE X
 
 using namespace std;
 
-vector<string> stringToWordsVector(const string& s)
+
+// Convert a string to a vector of words.
+// Used "http://stackoverflow.com/questions/8425214/splitting-string-into-a-vectorstring-of-words" as template for function.
+vector<string> stringToWordsVector(const string &s)
 {
-   vector<string> ret;
-   typedef string::size_type string_size;
-   string_size i = 0;
+	// Create a string vector to return.
+	vector<string> ret;
+	typedef string::size_type string_size;
+	string_size i = 0;
 
-   // invariant: we have processed characters [original value of i, i) 
-   while (i != s.size()) {
-      // ignore leading blanks
-      // invariant: characters in range [original i, current i) are all spaces
-      while (i != s.size() && isspace(s[i]))
-         ++i;
+	// invariant: we have processed characters [original value of i, i) 
+while (i != s.size()) {
 
-      // find end of next word
-      string_size j = i;
-      // invariant: none of the characters in range [original j, current j)is a space
-      while (j != s.size() && !isspace(s[j]))
-         j++;
 
-      // if we found some nonwhitespace characters 
-      if (i != j) {
-         // copy from s starting at i and taking j - i chars
-         ret.push_back(s.substr(i, j - i));
-         i = j;
-      }
-   }
-   return ret;
+		
+		// while there is a space, ignore character.
+		while (i != s.size() && isspace(s[i]) || s[i] == ',')
+		{
+			++i;
+		}
+		
+		// find how many charactars there are in the next word.
+		string_size j = i;
+		// invariant: none of the characters in range [original j, current j)is a space
+	  while (((j != s.size()) && (!isspace(s[j]))) && (s[j] != ','))
+		{
+
+			j++;
+			//cout << j << endl;
+		}
+		
+		// push the character indexes into the vector.
+		if (i != j) 
+		{
+			// copy from s starting at i and taking j - i chars
+			ret.push_back(s.substr(i, j - i));
+			i = j;
+		}
+	}
+	return ret;
 }
 
-void printStringVector(vector<string> &v)
+
+
+void parseCommand(vector<string> &v)
 {
-  vector<string>::iterator it;
-  for (it=v.begin(); it<v.end(); it++)
+  vector<string> colnames;
+  vector<string> coltypes;
+ typedef string::size_type string_size;
+	string_size i = 0;
+
+  while ( i != v.size())
   {
-    cout << ' ' << *it;
-    cout << '\n';
+    if ( v[i] == "(")
+    {
+    	i++;
+  		string_size j = i;
+  	
+  		while (v[j] != ")")
+  		{
+  		  colnames.push_back(v[j]);
+  		  coltypes.push_back(v[j+1]);
+  			j= j + 2;
+  			
+  		}  
+        
+    }
+    //cout << i << endl;
+    ++i;
+    
   }
+  
+  printStringVector(colnames);
+  printStringVector(coltypes);
+  
+  // if(v[0] == "DROP")
+  // {
+  //   if(v[1] == "TABLE")
+  //   {
+  //     cout << "COMMAND DROP TABLE USED" << endl;
+  //   }
+  //   else if(v[1] == "DATABASE")
+  //   {
+  //     cout << "COMMAND DROP DATABASE USED" << endl;
+  //   }
+  // }
+  // else if(v[0] == "CREATE")
+  // {
+  //   vector<string> colnames, coltypes;
+  //   if(v[1] == "TABLE")
+  //   {
+  //     cout << "COMMAND CREATE TABLE USED" << endl;
+  //   }
+  //   else if(v[1] == "DATABASE")
+  //   {
+  //     cout << "COMMAND CREATE DATABASE USED" << endl;
+  //   }
+     
+  // }
+  // else if(v[0] == "UPDATE")
+  // {
+  //   cout << "COMMAND UPDATE USED" << endl;
+  // }
 }
 
+
+
+
+// Main 
 int main()
 {
   string cmd;
   cout << "Enter Command" << endl;
   
   getline(cin, cmd);
+  
   vector<string> words = stringToWordsVector(cmd);
+
   printStringVector(words);
-
-  if(words[0] == "DROP")
-  {
-    if(words[1] == "TABLE")
-    {
-      cout << "COMMAND DROP TABLE USED" << endl;
-    }
-    else if(words[1] == "DATABASE")
-    {
-      cout << "COMMAND DROP DATABASE USED" << endl;
-    }
-  }
-  else if(words[0] == "CREATE")
-  {
-    if(words[1] == "TABLE")
-    {
-      cout << "COMMAND CREATE TABLE USED" << endl;
-    }
-    else if(words[1] == "DATABASE")
-    {
-      cout << "COMMAND CREATE DATABASE USED" << endl;
-    }
-     
-  }
-  else if(words[0] == "UPDATE")
-  {
-     cout << "COMMAND UPDATE USED" << endl;
-  }
-
+  
+  parseCommand(words);
   
   
 }
