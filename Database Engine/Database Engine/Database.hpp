@@ -29,7 +29,7 @@ public:
   //Funciton to delete database
   void DROP_DATABASE();
   //Function to create a new table
-  void CREATE_TABLE(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes);
+  void CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes);
   //Function to delete a table
   void DROP_TABLE(string TableName);
 };

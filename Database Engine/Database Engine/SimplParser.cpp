@@ -27,10 +27,8 @@ vector<string> stringToWordsVector(const string &s)
 	string_size i = 0;
 
 	// invariant: we have processed characters [original value of i, i) 
-while (i != s.size()) {
-
-
-		
+  while (i != s.size()) 
+  {
 		// while there is a space, ignore character.
 		while (i != s.size() && isspace(s[i]) || s[i] == ',')
 		{
@@ -39,12 +37,11 @@ while (i != s.size()) {
 		
 		// find how many charactars there are in the next word.
 		string_size j = i;
+		
 		// invariant: none of the characters in range [original j, current j)is a space
 	  while (((j != s.size()) && (!isspace(s[j]))) && (s[j] != ','))
 		{
-
 			j++;
-			//cout << j << endl;
 		}
 		
 		// push the character indexes into the vector.
@@ -58,13 +55,13 @@ while (i != s.size()) {
 	return ret;
 }
 
-
-
 void parseCommand(vector<string> &v)
 {
   vector<string> colnames;
   vector<string> coltypes;
- typedef string::size_type string_size;
+  string tableName;
+  
+  typedef string::size_type string_size;
 	string_size i = 0;
 
   while ( i != v.size())
@@ -79,46 +76,43 @@ void parseCommand(vector<string> &v)
   		  colnames.push_back(v[j]);
   		  coltypes.push_back(v[j+1]);
   			j= j + 2;
-  			
   		}  
-        
     }
-    //cout << i << endl;
     ++i;
-    
   }
   
   printStringVector(colnames);
   printStringVector(coltypes);
   
-  // if(v[0] == "DROP")
-  // {
-  //   if(v[1] == "TABLE")
-  //   {
-  //     cout << "COMMAND DROP TABLE USED" << endl;
-  //   }
-  //   else if(v[1] == "DATABASE")
-  //   {
-  //     cout << "COMMAND DROP DATABASE USED" << endl;
-  //   }
-  // }
-  // else if(v[0] == "CREATE")
-  // {
-  //   vector<string> colnames, coltypes;
-  //   if(v[1] == "TABLE")
-  //   {
-  //     cout << "COMMAND CREATE TABLE USED" << endl;
-  //   }
-  //   else if(v[1] == "DATABASE")
-  //   {
-  //     cout << "COMMAND CREATE DATABASE USED" << endl;
-  //   }
+  if(v[0] == "DROP")
+  {
+    if(v[1] == "TABLE")
+    {
+      //tableName = v[2];
+    }
+    else if(v[1] == "DATABASE")
+    {
+      cout << "COMMAND DROP DATABASE USED" << endl;
+    }
+  }
+  else if(v[0] == "CREATE")
+  {
+    if(v[1] == "TABLE")
+    {
+      Database db("NewDB");
+      tableName = v[2];
+      db.CREATE_TABLE(tableName, colnames, coltypes);
+    }
+    else if(v[1] == "DATABASE")
+    {
+      cout << "COMMAND CREATE DATABASE USED" << endl;
+    }
      
-  // }
-  // else if(v[0] == "UPDATE")
-  // {
-  //   cout << "COMMAND UPDATE USED" << endl;
-  // }
+  }
+  else if(v[0] == "UPDATE")
+  {
+    cout << "COMMAND UPDATE USED" << endl;
+  }
 }
 
 

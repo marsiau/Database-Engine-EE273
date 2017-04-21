@@ -82,7 +82,7 @@ void Database::DROP_DATABASE()
 }
 
 //Function to create a new table
-void Database::CREATE_TABLE(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)
+void Database::CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes)
 {
   Table* pTable = new Table (NewTableName, CollumnNames, CollumnTypes);
   if(!pTable){cout<<"ERROR allocating the Table";}
