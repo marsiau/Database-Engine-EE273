@@ -34,7 +34,6 @@ vector<string> stringToWordsVector(const string &s)
 		{
 			++i;
 		}
-		
 		// find how many charactars there are in the next word.
 		string_size j = i;
 		
@@ -43,7 +42,7 @@ vector<string> stringToWordsVector(const string &s)
 		{
 			j++;
 		}
-		
+
 		// push the character indexes into the vector.
 		if (i != j) 
 		{
@@ -55,10 +54,12 @@ vector<string> stringToWordsVector(const string &s)
 	return ret;
 }
 
+// Parse Command.
 void parseCommand(vector<string> &v)
 {
   vector<string> colnames;
   vector<string> coltypes;
+  vector<string> data;
   string tableName;
   
   typedef string::size_type string_size;
@@ -73,22 +74,29 @@ void parseCommand(vector<string> &v)
   	
   		while (v[j] != ")")
   		{
-  		  colnames.push_back(v[j]);
-  		  coltypes.push_back(v[j+1]);
-  			j= j + 2;
+  		  if (v[0] == "CREATE")
+  		  {
+  		    colnames.push_back(v[j]);
+  		    coltypes.push_back(v[j+1]);
+  			  j= j + 2;
+  		  }
+  		  if (v[0] == "INSERT")
+  		  {
+  		    data.push_back(v[j]);
+  		  }
+  		  
   		}  
     }
     ++i;
   }
   
-  printStringVector(colnames);
-  printStringVector(coltypes);
-  
   if(v[0] == "DROP")
   {
     if(v[1] == "TABLE")
     {
-      //tableName = v[2];
+      // Database db("DB1");
+      // tableName = v[2];
+      // db.DROP_TABLE(tableName);
     }
     else if(v[1] == "DATABASE")
     {
@@ -113,6 +121,12 @@ void parseCommand(vector<string> &v)
   {
     cout << "COMMAND UPDATE USED" << endl;
   }
+  else if(v[0] == "INSERT")
+  {
+    tableName = v[2];
+    INSERT(data);
+    
+  }
 }
 
 
@@ -121,18 +135,20 @@ void parseCommand(vector<string> &v)
 // Main 
 int main()
 {
-  string cmd;
-  cout << "Enter Command" << endl;
+  bool quit = 0;
+  while (!quit)
+  {
+    string cmd;
+    cout << "Enter Command" << endl;
   
-  getline(cin, cmd);
+    getline(cin, cmd);
   
-  vector<string> words = stringToWordsVector(cmd);
+    vector<string> words = stringToWordsVector(cmd);
 
-  printStringVector(words);
+    printStringVector(words);
   
-  parseCommand(words);
-  
-  
+    parseCommand(words);
+  }
 }
 
 
