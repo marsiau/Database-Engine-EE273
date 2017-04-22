@@ -16,8 +16,8 @@ class Table
 private:
 string TableName;
 //TODO Why vector of cells for names and types?
-vector<Cell> TBCollumnNames;
-vector<Cell> TBCollumnTypes;
+vector<string> TBCollumnNames;
+vector<string> TBCollumnTypes;
 list< vector<Cell> > TableData;
 public:
 //Default constructor
