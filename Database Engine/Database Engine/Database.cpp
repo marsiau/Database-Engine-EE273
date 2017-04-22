@@ -25,20 +25,33 @@ Database::Database(string Name)
 //Database destructor
 Database::~Database()
 {
-  //If database is not emty, save it
-  if(MapOfTables.size() > 0) //if(!MapOfTables.emty()) didn't work?!
+  string FileName = chkType(DBName, 1); //Add the file type
+  ofstream DBStream;
+  DBStream.open(FileName, ios::trunc);
+  if(!DBStream.is_open())
   {
-    //Iterate through map and destruct Table objects
-    TableMap::iterator It = MapOfTables.begin();
-    while(It != MapOfTables.end())
-    {
-      (*(It->second)).~Table();
-      ++It;
-    }
-    //Clear the map contents
-    MapOfTables.clear();
+    cout<<"Error opening a database file\n";
   }
-  //If it is emty then there is nothing to be cleared
+  else
+  {
+    //If database is not emty, save it
+    if(MapOfTables.size() > 0) //if(!MapOfTables.emty()) didn't work?!
+    {
+      //Iterate through map and destruct Table objects
+      TableMap::iterator It = MapOfTables.begin();
+      while(It != MapOfTables.end())
+      {
+        //Save the table name inside database file
+        DBStream >> (It->first)>>',';
+        //Destruct the Table
+        (*(It->second)).~Table();
+        ++It;
+      }
+      //Clear the map contents
+      MapOfTables.clear();
+    }
+    //If it is emty then there is nothing to be cleared
+  }
 }
 
 //Open an existing Database
