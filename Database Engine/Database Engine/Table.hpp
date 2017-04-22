@@ -45,10 +45,10 @@ void PRINT();
 //Returns list of pointers to rows where conditions are met
 list< vector<Cell>* > WHERE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
 //Changes/updates specific collumns
-void Table::UPDATE(vector<Cell> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+void UPDATE(vector<Cell> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
 //Deletes all data stored in table
-void Table::DELETE();
+void DELETE();
 //Deletes specific rows of table data
-void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+void DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
 };
 #endif
