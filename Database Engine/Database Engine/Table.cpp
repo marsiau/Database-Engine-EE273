@@ -42,6 +42,7 @@ string genString(int size, char character)//TESTED
   string temp(size, character);
   return temp;
 }
+/*
 //Select collumns
 vector<int> SelColl(vector<Cell> CollumnNames)
 {
@@ -93,14 +94,14 @@ bool Compare(Cell CellValue,char FilterCond, Cell FilterVal)
       if(CellValue >= FilterVal) {return 1;}
       else {return 0;}
       break;
-      */
+
     default:
       return 0;
       break
   }
 }
 //-------------------- Internal functions END --------------------
-
+*/
 //Table constructor
 //Table::Table();//For temporary table
 
@@ -345,6 +346,7 @@ void Table::PRINT()//TESTED
   }
 }
 
+#if 0
 //Returns list of pointers to rows where conditions are met
 list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
 {
@@ -429,6 +431,5 @@ void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vec
   }
 
 }
-#if 0
 
 #endif
