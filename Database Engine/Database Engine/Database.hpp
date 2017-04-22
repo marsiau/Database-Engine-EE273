@@ -32,5 +32,7 @@ public:
   void CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes);
   //Function to delete a table
   void DROP_TABLE(string TableName);
+  //Updates database and table files
+  void SAVEALL();
 };
 #endif

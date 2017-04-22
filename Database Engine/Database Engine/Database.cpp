@@ -42,7 +42,7 @@ Database::~Database()
       while(It != MapOfTables.end())
       {
         //Save the table name inside database file
-        DBStream >> (It->first)>>',';
+        DBStream << (It->first) <<',';
         //Destruct the Table
         (*(It->second)).~Table();
         ++It;
@@ -111,4 +111,32 @@ void Database::DROP_TABLE(string TableName)
   MapOfTables.erase(TableName);
   //Delete any remaining files
   deleteFile(TableName);
+}
+
+void Database::SAVEALL()
+{
+  string FileName = chkType(DBName, 1); //Add the file type
+  ofstream DBStream;
+  DBStream.open(FileName, ios::trunc);
+  if(!DBStream.is_open())
+  {
+    cout<<"Error opening a database file\n";
+  }
+  else
+  {
+    //If database is not emty, save it
+    if(MapOfTables.size() > 0)
+    {
+      //Iterate through map
+      TableMap::iterator It = MapOfTables.begin();
+      while(It != MapOfTables.end())
+      {
+        //Save the table name inside database file
+        DBStream << (It->first) <<',';
+        //Destruct the Table
+        (*(It->second)).WRITE_TABLE_TF();
+        ++It;
+      }
+    }
+  }
 }
