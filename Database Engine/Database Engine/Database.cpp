@@ -175,3 +175,14 @@ void Database::PRINT_TABLE(string TBName)
 {
   (*MapOfTables.find(TBName)->second).PRINT();
 }
+
+//Deletes all data stored in table
+void Database::DELETE_TABLE(string TBName)
+{
+  (*(MapOfTables.find(TBName))->second).DELETE();
+}
+//Deletes specific rows of table data
+void Database::DELETE_TABLE(string TBName, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+{
+  (*MapOfTables.find(TBName)->second).DELETE(Collumns, FilterCond, FilterVal);
+}

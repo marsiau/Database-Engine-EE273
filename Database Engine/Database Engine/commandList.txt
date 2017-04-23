@@ -8,7 +8,8 @@ OPEN DATABASES "DBName"
 SAVE
 DROP DATABASE
 DRAP TABLE "TBName"
-
-
 INSERT INTO "TBName" VALUES "Value1", "Value2"...
 INSERT INTO "TBName" "CollumnName1" "CollumnName2" .. VALUES "Value1", "Value2"...
+PRINT TABLE "TBName"
+DELETE FROM "TBName"
+DELETE FROM "TBName" WHERE "Collumn" "Operator" "Value"

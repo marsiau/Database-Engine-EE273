@@ -217,7 +217,19 @@ int main()
           (*(ADB->second)).PRINT_TABLE(UsrInV[2]);
         }
       }
+      else if(UsrInV[0] == "DELETE" && UsrInV[1] == "FROM")
+      {
+        if(UsrInV.size() == 3)
+        {
+          (*(ADB->second)).DELETE_TABLE(UsrInV[2]);//Deletes all rows in the table
+        }
+        else
+        {
+          vector<string>::iterator UsrInVIt = UsrInV.begin();
 
+          //void DELETE_TABLE(string TBName, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+        }
+      }
 
 
 
@@ -251,4 +263,6 @@ if ( m.find("f") == m.end() ) {
 } else {
   // found
 }
+
+(*(ADB->second))
 #endif

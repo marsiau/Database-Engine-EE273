@@ -46,6 +46,10 @@ public:
   void INSERT_INTO_TABLE(string TBName, list<vector<Cell> >values);
   //Print table
   void PRINT_TABLE(string TBName);
+  //Deletes all data stored in table
+  void DELETE_TABLE(string TBName);
+  //Deletes specific rows of table data
+  void DELETE_TABLE(string TBName, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
 
 };
 #endif

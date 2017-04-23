@@ -397,17 +397,18 @@ void Table::UPDATE(vector<Cell> UpCollumns, vector<Cell> UpVal, vector<Cell> Col
     }
   }
 }
+#endif
 
 //Deletes all data stored in table
 void Table::DELETE()
 {
-  TableData.erase(TableData.begin(); TableData.end());
+  TableData.erase(TableData.begin(), TableData.end());
 }
 //Deletes specific rows of table data
 void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
 {
   vector<int> CollNum = SelColl(TBCollumnNames, Collumns);
-  vector<Cell> >::iterator FIt; //Filter condition data iterator
+  vector<Cell> ::iterator FIt; //Filter condition data iterator
   list< vector<Cell> >::iterator LIt; //Data list iterator
 
   for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
@@ -418,9 +419,9 @@ void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vec
       //To go through all filter conditions/values
       for(int i = 0; i != FilterCond.size() ;++i)
       {
-        for(int ii = 0; ii != (*i).size() ;++ii)
+        for(int ii = 0; ii != FilterCond[i].size() ;++ii)
         {
-          if(Compare((*(LIt)[(*CIt)]), FilterCond[i][ii], FilterVal[i][ii]))
+          if(Compare((*(LIt))[(*CIt)], FilterCond[i][ii], FilterVal[i][ii]))
           {
             //http://www.cplusplus.com/reference/list/list/erase/
             TableData.erase(LIt);
@@ -432,5 +433,3 @@ void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vec
   }
 
 }
-
-#endif
