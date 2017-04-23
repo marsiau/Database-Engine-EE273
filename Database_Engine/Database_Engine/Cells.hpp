@@ -1,6 +1,6 @@
+#if 0
 #ifndef CELLS_HPP_
 #define CELLS_HPP_
-
 //TODO use cells_smth for virtal? class, then create different cell classes and stick them into union
 
 /*

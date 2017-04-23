@@ -7,8 +7,8 @@
 #include <list>
 #include <vector>
 
-//using Cell = string;
 using namespace std;
+
 typedef string Cell;
 
 class Table
@@ -16,8 +16,8 @@ class Table
 private:
 string TableName;
 //TODO Why vector of cells for names and types?
-vector<Cell> TBCollumnNames;
-vector<Cell> TBCollumnTypes;
+vector<string> TBCollumnNames;
+vector<string> TBCollumnTypes;
 list< vector<Cell> > TableData;
 public:
 //Default constructor
@@ -38,17 +38,18 @@ list< vector<Cell*> >SELECTP(vector<Cell> CollumnNames);
 void INSERT(vector<string> collumns, vector<Cell> values);
 //Add new rows to the table, w/o specifying the collumns
 void INSERT(vector<Cell> values);
-//Adds a list of new rows. TODO NOT SAFE, no cheks performed wether the collumns match
+//Adds a list of new rows. NOT SAFE, no cheks performed whether the collumns match
+//Possible us is when merging two tables
 void INSERT(list<vector<Cell> >values);
 //Print the table
 void PRINT();
 //Returns list of pointers to rows where conditions are met
 list< vector<Cell>* > WHERE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
 //Changes/updates specific collumns
-void Table::UPDATE(vector<Cell> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+void UPDATE(vector<Cell> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
 //Deletes all data stored in table
-void Table::DELETE();
+void DELETE();
 //Deletes specific rows of table data
-void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+void DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
 };
 #endif

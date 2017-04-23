@@ -1,4 +1,3 @@
-//TODO mbie move all additional functions into new file?
 #include <fstream>
 #include <string>
 //#include <list>
@@ -17,7 +16,7 @@ typedef pair<string, Table*> TableMapPair;
 //-------------------- Internal functions END --------------------
 
 //Create an emty database
-Database::Database(string Name)
+Database::Database(string Name)//TESTED
 {
   DBName = chkType(Name, 0);
 }
@@ -25,20 +24,33 @@ Database::Database(string Name)
 //Database destructor
 Database::~Database()
 {
-  //If database is not emty, save it
-  if(MapOfTables.size() > 0) //if(!MapOfTables.emty()) didn't work?!
+  string FileName = chkType(DBName, 1); //Add the file type
+  ofstream DBStream;
+  DBStream.open(FileName, ios::trunc);
+  if(!DBStream.is_open())
   {
-    //Iterate through map and destruct Table objects
-    TableMap::iterator It = MapOfTables.begin();
-    while(It != MapOfTables.end())
-    {
-      (*(It->second)).~Table();
-      ++It;
-    }
-    //Clear the map contents
-    MapOfTables.clear();
+    cout<<"Error opening a database file\n";
   }
-  //If it is emty then there is nothing to be cleared
+  else
+  {
+    //If database is not emty, save it
+    if(!MapOfTables.empty())
+    {
+      //Iterate through map and destruct Table objects
+      TableMap::iterator It = MapOfTables.begin();
+      while(It != MapOfTables.end())
+      {
+        //Save the table name inside database file
+        DBStream << (It->first) <<',';
+        //Destruct the Table
+        (*(It->second)).~Table();
+        ++It;
+      }
+      //Clear the map contents
+      MapOfTables.clear();
+    }
+    //If it is emty then there is nothing to be cleared
+  }
 }
 
 //Open an existing Database
@@ -78,15 +90,18 @@ void Database::DROP_DATABASE()
     ++It;
   }
   //Delete the map contents
-  //MapOfTables.clear();
+  MapOfTables.clear();
 }
 
 //Function to create a new table
-void Database::CREATE_TABLE(string NewTableName, vector<Cell> CollumnNames, vector<Cell> CollumnTypes)
+void Database::CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes)
 {
   Table* pTable = new Table (NewTableName, CollumnNames, CollumnTypes);
-  if(!pTable){cout<<"ERROR allocating the Table";}
-  MapOfTables.insert(make_pair(NewTableName, pTable));
+  if(!pTable){cout<<"ERROR allocating new Table\n";}
+  else
+  {
+    MapOfTables.insert( {NewTableName, pTable} );
+  }
 }
 
 //Function to delete a table
@@ -98,4 +113,76 @@ void Database::DROP_TABLE(string TableName)
   MapOfTables.erase(TableName);
   //Delete any remaining files
   deleteFile(TableName);
+}
+
+void Database::SAVEALL()
+{
+  string FileName = chkType(DBName, 1); //Add the file type
+  ofstream DBStream;
+  DBStream.open(FileName, ios::trunc);
+  if(!DBStream.is_open())
+  {
+    cout<<"Error opening a database file\n";
+  }
+  else
+  {
+    //If database is not emty, save it
+    if(MapOfTables.size() > 0)
+    {
+      //Iterate through map
+      TableMap::iterator It = MapOfTables.begin();
+      while(It != MapOfTables.end())
+      {
+        //Save the table name inside database file
+        DBStream << (It->first) <<',';
+        //Destruct the Table
+        (*(It->second)).WRITE_TABLE_TF();
+        ++It;
+      }
+    }
+  }
+}
+//Checks if such table exists
+bool Database::CHECK_TABLE(string TBName)
+{
+  if(MapOfTables.find(TBName) == MapOfTables.end())
+  {return false;}//not found
+  else
+  {return true;}//found
+}
+
+//Add new rows to the table
+void Database::INSERT_INTO_TABLE(string TBName, vector<string> collumns, vector<Cell> values)
+{
+  (*MapOfTables.find(TBName)->second).INSERT(collumns, values);
+}
+
+//Add new rows to the table, w/o specifying the collumns
+void Database::INSERT_INTO_TABLE(string TBName, vector<Cell> values)
+{
+  (*MapOfTables.find(TBName)->second).INSERT(values);
+}
+
+//Adds a list of new rows. NOT SAFE, no cheks performed whether the collumns match
+//Possible us is when merging two tables
+void Database::INSERT_INTO_TABLE(string TBName, list<vector<Cell> >values)
+{
+  (*MapOfTables.find(TBName)->second).INSERT(values);
+}
+
+//Print one of the tables
+void Database::PRINT_TABLE(string TBName)
+{
+  (*MapOfTables.find(TBName)->second).PRINT();
+}
+
+//Deletes all data stored in table
+void Database::DELETE_TABLE(string TBName)
+{
+  (*(MapOfTables.find(TBName))->second).DELETE();
+}
+//Deletes specific rows of table data
+void Database::DELETE_TABLE(string TBName, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+{
+  (*MapOfTables.find(TBName)->second).DELETE(Collumns, FilterCond, FilterVal);
 }
