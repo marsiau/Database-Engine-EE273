@@ -1,7 +1,7 @@
-
 #ifndef DATABASE_HPP_
 #define DATABASE_HPP_
 
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <list>
@@ -34,5 +34,6 @@ public:
   void DROP_TABLE(string TableName);
   //Updates database and table files
   void SAVEALL();
+  void TEST(){cout<<"test"<<endl;};
 };
 #endif

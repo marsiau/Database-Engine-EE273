@@ -17,7 +17,7 @@ typedef pair<string, Table*> TableMapPair;
 //-------------------- Internal functions END --------------------
 
 //Create an emty database
-Database::Database(string Name)
+Database::Database(string Name)//TESTED
 {
   DBName = chkType(Name, 0);
 }
@@ -35,7 +35,7 @@ Database::~Database()
   else
   {
     //If database is not emty, save it
-    if(MapOfTables.size() > 0) //if(!MapOfTables.emty()) didn't work?!
+    if(!MapOfTables.empty())
     {
       //Iterate through map and destruct Table objects
       TableMap::iterator It = MapOfTables.begin();
@@ -91,15 +91,18 @@ void Database::DROP_DATABASE()
     ++It;
   }
   //Delete the map contents
-  //MapOfTables.clear();
+  MapOfTables.clear();
 }
 
 //Function to create a new table
 void Database::CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes)
 {
   Table* pTable = new Table (NewTableName, CollumnNames, CollumnTypes);
-  if(!pTable){cout<<"ERROR allocating the Table";}
-  MapOfTables.insert(make_pair(NewTableName, pTable));
+  if(!pTable){cout<<"ERROR allocating new Table\n";}
+  else
+  {
+    MapOfTables.insert( {NewTableName, pTable} );
+  }
 }
 
 //Function to delete a table

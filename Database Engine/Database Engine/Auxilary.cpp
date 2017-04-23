@@ -30,7 +30,8 @@ string chkType(string InStr, bool chng)//TESTED
 //From http://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
 bool exists_test (const std::string& name)
 {
-    ifstream f(name.c_str());
+
+    ifstream f((chkType(name, 1)).c_str());
     return f.good();
 }
 //Deletes a file
@@ -47,10 +48,10 @@ void deleteFile(string iFileName)
 // Print a vector of strings to the console window.
 void printStringVector(vector<string> &v)
 {
-  vector<string>::iterator it;
-  for (it=v.begin(); it<v.end(); it++)
+  cout<< '\n';
+  for (vector<string>::iterator it=v.begin(); it<v.end(); it++)
   {
-    cout << ' ' << *it;
-    cout << '\n';
+    cout << *it <<'|';
   }
+  cout << '\n';
 }
