@@ -143,3 +143,24 @@ void Database::SAVEALL()
     }
   }
 }
+
+//Add new rows to the table
+void Database::INSERT_INTO_TABLE(string TBName, vector<string> collumns, vector<Cell> values)
+{
+  (*MapOfTables.find(TBName)->second).INSERT(vector<string> collumns, vector<Cell> values);
+}
+//Add new rows to the table, w/o specifying the collumns
+void Database::INSERT_INTO_TABLE(string TBName, vector<Cell> values)
+{
+  (*MapOfTables.find(TBName)->second).INSERT(vector<Cell> values);
+}
+//Adds a list of new rows. TODO NOT SAFE, no cheks performed wether the collumns match
+void Database::INSERT_INTO_TABLE(string TBName, list<vector<Cell> >values)
+{
+  (*MapOfTables.find(TBName)->second).INSERT(list<vector<Cell> >values);
+}
+
+void Database::PRINT_TABLE(string TBName)
+{
+  (*MapOfTables.find(TBName)->second).PRINT();
+}

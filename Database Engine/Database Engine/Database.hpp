@@ -21,19 +21,29 @@ private:
 
 public:
   //Database constructor, creates and emty database
-  Database(string Name);
+  Database(string Name);//TESTED
   //Database destructor
   ~Database();
   //Function to open an existing database
-  void OPEN();
+  void OPEN();//TESTED
   //Funciton to delete database
   void DROP_DATABASE();
   //Function to create a new table
-  void CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes);
+  void CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes);//TESTED
   //Function to delete a table
   void DROP_TABLE(string TableName);
   //Updates database and table files
   void SAVEALL();
-  void TEST(){cout<<"test"<<endl;};
+
+  //Add new rows to the table
+  void INSERT_INTO_TABLE(string TBName, vector<string> collumns, vector<Cell> values);
+  //Add new rows to the table, w/o specifying the collumns
+  void INSERT_INTO_TABLE(string TBName, vector<Cell> values);
+  //Adds a list of new rows. TODO NOT SAFE, no cheks performed wether the collumns match
+  void INSERT_INTO_TABLE(string TBName, list<vector<Cell> >values);
+
+  //Print table
+  void PRINT_TABLE(string TBName);
+
 };
 #endif
