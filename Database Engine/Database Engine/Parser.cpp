@@ -131,7 +131,7 @@ int main()
           }
         }
       }
-      else if(UsrInV[0] == "OPEN" && UsrInV[1] == "DATABASE")//TESTED
+      else if(UsrInV[0] == "OPEN" && UsrInV[1] == "DATABASE")//TESTED MS
       {
         if(UsrInV.size() < 3)
         {cout<<"ERROR\nDatabase name not specified\n";}
@@ -154,18 +154,18 @@ int main()
           }
         }
       }
-      else if(UsrInV[0] == "SAVE")
+      else if(UsrInV[0] == "SAVE")//TESTED MS
       {
         for(DBMap::iterator DBMIt = MapOfDatabases.begin(); DBMIt != MapOfDatabases.end(); ++DBMIt)
         {
           (*(DBMIt->second)).SAVEALL();
         }
       }
-      else if(UsrInV[0] == "LIST" && UsrInV[1] == "TABLES")
+      else if(UsrInV[0] == "LIST" && UsrInV[1] == "TABLES")//TESTED MS
       {
         (*(ADB->second)).LIST_TABLES();
       }
-      else if(UsrInV[0] == "DROP")
+      else if(UsrInV[0] == "DROP")//TESTED MS
       {
         if(UsrInV[1] == "DATABASE")
         {
@@ -181,7 +181,7 @@ int main()
         }
         else {cout<<"ERROR\n";}
       }
-      else if(UsrInV[0] == "INSERT" && UsrInV[1] == "INTO")
+      else if(UsrInV[0] == "INSERT" && UsrInV[1] == "INTO")//TESTED MS
       {
         //http://stackoverflow.com/questions/571394/how-to-find-if-an-item-is-present-in-a-stdvector
         if ( !(find(UsrInV.begin(), UsrInV.end(), "VALUES") != UsrInV.end() ))
@@ -243,42 +243,49 @@ int main()
             vector<char> FilterCondVec;
             vector< vector<Cell> > FilterVal;
             vector<Cell> FilterValVec;
-            vector<string>::iterator UsrInVIt = UsrInV.begin() + 5;
+            vector<string>::iterator UsrInVIt = UsrInV.begin() + 4;
+            string CollumnName = "";
             while(UsrInVIt != UsrInV.end())
             {
-              static string CollumnName = "";
               if((*UsrInVIt) == CollumnName)
               {
                 ++UsrInVIt;//Skip Collumn Name
                 FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
                 ++UsrInVIt;
                 FilterValVec.push_back(*UsrInVIt);//Store comparison value
-                ++UsrInVIt;
               }
               else
               {
                 //Flush previous vectors
-                if(!(FilterCondVec.empty() && !FilterValVec.empty()))
+                if(!FilterCondVec.empty())
                 {
                   FilterCond.push_back(FilterCondVec);
                   FilterCondVec.clear();
+                }
+                if(!FilterValVec.empty())
+                {
                   FilterVal.push_back(FilterValVec);
                   FilterValVec.clear();
                 }
                 CollumnName = (*UsrInVIt);
-                Collumns.push_back(*UsrInVIt);//Store collumn name
+                Collumns.push_back(CollumnName);//Store collumn name
                 ++UsrInVIt;
                 FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
                 ++UsrInVIt;
                 FilterValVec.push_back(*UsrInVIt);//Store comparison value
-                ++UsrInVIt;
               }
+              ++UsrInVIt;
             }
+            //Flush last words
+            FilterCond.push_back(FilterCondVec);
+            FilterVal.push_back(FilterValVec);
+            //Delete them
             (*(ADB->second)).DELETE_TABLE(UsrInV[2], Collumns, FilterCond, FilterVal);
           }
         }
       }
-
+#if 0
+#endif
 
 
       else {cout<<"ERROR\nUnrecognised user input\nPlease try again\n";}

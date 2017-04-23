@@ -66,41 +66,38 @@ vector<int> SelColl(vector<string> TBCollumnNames, vector<Cell> CollumnNames)
       }
     }
   }
+  return CollNum;
 }
 //Compare Cell value to filter value
 bool Compare(Cell CellValue,char FilterCond, Cell FilterVal)
 {
-  return true;
-  #if 0
   switch(FilterCond)
   {
     case '=' :
-      if(CellValue = FilterVal) {return 1;}
+      if(CellValue.compare(FilterVal) == 0) {return 1;}
       else {return 0;}
       break;
-      //TODO Fix after Cells object is created
     case '<' :
-      //if(CellValue < FilterVal) {return 1;}
+      if(CellValue.compare(FilterVal) < 0) {return 1;}
       else {return 0;}
       break;
     case '>' :
-      if(CellValue > FilterVal) {return 1;}
+      if(CellValue.compare(FilterVal) > 0) {return 1;}
       else {return 0;}
       break;
     case '<=' :
-      if(CellValue <= FilterVal) {return 1;}
+      if(CellValue.compare(FilterVal) <= 0) {return 1;}
       else {return 0;}
       break;
     case '>=' :
-      if(CellValue >= FilterVal) {return 1;}
+      if(CellValue.compare(FilterVal) >= 0) {return 1;}
       else {return 0;}
       break;
 
     default:
       return 0;
-      break
+      break;
   }
-  #endif
 }
 //-------------------- Internal functions END --------------------
 //Table constructor
@@ -351,7 +348,6 @@ void Table::PRINT()//TESTED
 list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
 {
   list< vector<Cell>* > Selection;
-
   vector<int> CollNum = SelColl(TBCollumnNames, Collumns);
   vector<Cell>::iterator FIt; //Filter condition data iterator
   list< vector<Cell> >::iterator LIt; //Data list iterator
@@ -409,27 +405,32 @@ void Table::DELETE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vec
 {
   vector<int> CollNum = SelColl(TBCollumnNames, Collumns);
   vector<Cell> ::iterator FIt; //Filter condition data iterator
-  list< vector<Cell> >::iterator LIt; //Data list iterator
-
-  for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
+  list< vector<Cell> >::iterator LIt, tmp ; //Data list iterator
+  for(LIt = TableData.begin(); LIt != TableData.end();)
   {
+    bool del = false;
     vector<int>::iterator CIt; //Cell vector iterators
-    for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt)
+    vector< vector<char> >::iterator VVCh = FilterCond.begin();
+    vector< vector<Cell> >::iterator VVC = FilterVal.begin();
+    for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt, ++VVCh, ++VVC)
     {
-      //To go through all filter conditions/values
-      for(int i = 0; i != FilterCond.size() ;++i)
+      vector<char>::iterator VCh = (*VVCh).begin();
+      vector<Cell>::iterator VC = (*VVC).begin();
+      for(; VCh != (*VVCh).end() && VC != (*VVC).end(); ++VCh, ++VC )
       {
-        for(int ii = 0; ii != FilterCond[i].size() ;++ii)
+        if(Compare( ((*LIt)[*CIt]), (*VCh), (*VC) ))
         {
-          if(Compare((*(LIt))[(*CIt)], FilterCond[i][ii], FilterVal[i][ii]))
-          {
-            //http://www.cplusplus.com/reference/list/list/erase/
-            TableData.erase(LIt);
-            //TODO or LIt = TableData.erase(LIt);?
-          }
+          del = true;
         }
       }
     }
+    if(del)
+    {
+      LIt = TableData.erase(LIt);
+    }
+    else
+    {
+      ++LIt;
+    }
   }
-
 }
