@@ -34,7 +34,8 @@ public:
   void DROP_TABLE(string TableName);
   //Updates database and table files
   void SAVEALL();
-
+  //Lists all tables
+  void LIST_TABLES();
   //Checks if such table exists
   bool CHECK_TABLE(string TBName);
   //Add new rows to the table

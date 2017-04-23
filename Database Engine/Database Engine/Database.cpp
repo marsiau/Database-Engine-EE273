@@ -61,13 +61,14 @@ void Database::OPEN()
     ifstream DBStream;
     DBStream.open(chkType(DBName, 1));
     if(!DBStream.is_open())
+    {cout<<"ERROR\nCan not open database file\n";}
+    else
     {
       string TableName;
-      while(DBStream.peek() != '\n')
+      //Read all the table names in the database
+      while(getline(DBStream, TableName, ','))
       {
-        //Read all the table names in the database
-        getline(DBStream, TableName, ',');
-        //new with non trivial constructor http://www.drdobbs.com/cpp/calling-constructors-with-placement-new/232901023
+        //New with non trivial constructor http://www.drdobbs.com/cpp/calling-constructors-with-placement-new/232901023
         Table* pTable = new Table (TableName);
         if(!pTable){cout<<"ERROR allocating the Table";}
         MapOfTables.insert(make_pair(TableName, pTable));
@@ -91,6 +92,8 @@ void Database::DROP_DATABASE()
   }
   //Delete the map contents
   MapOfTables.clear();
+  //Delete the database file
+  deleteFile(DBName);
 }
 
 //Function to create a new table
@@ -135,11 +138,22 @@ void Database::SAVEALL()
       {
         //Save the table name inside database file
         DBStream << (It->first) <<',';
-        //Destruct the Table
+        //Save tables
         (*(It->second)).WRITE_TABLE_TF();
         ++It;
       }
     }
+  }
+}
+//Lists all tables
+void Database::LIST_TABLES()
+{
+  TableMap::iterator It = MapOfTables.begin();
+  while(It != MapOfTables.end())
+  {
+    //Print tables
+    cout << (It->first) <<endl;
+    ++It;
   }
 }
 //Checks if such table exists
@@ -173,7 +187,7 @@ void Database::INSERT_INTO_TABLE(string TBName, list<vector<Cell> >values)
 //Print one of the tables
 void Database::PRINT_TABLE(string TBName)
 {
-  (*MapOfTables.find(TBName)->second).PRINT();
+  (*(MapOfTables.find(TBName))->second).PRINT();
 }
 
 //Deletes all data stored in table

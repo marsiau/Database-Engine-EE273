@@ -5,12 +5,13 @@ CREATE DATABASE "DBName"
 CREATE TABLE "TBName" "CollumnNames" "CollumnTypes"
 OPEN DATABASES "DBName"
 SAVE
-
-
-DROP DATABASE // Exits application
-DRAP TABLE "TBName" // Exits Application
-INSERT INTO "TBName" VALUES "Value1", "Value2"... // exits application
+LIST TABLES// NEWWWW
+DROP DATABASE
+DRAP TABLE "TBName"
+INSERT INTO "TBName" VALUES "Value1", "Value2"...
 INSERT INTO "TBName" "CollumnName1" "CollumnName2" .. VALUES "Value1", "Value2"... // exits application
-PRINT TABLE "TBName" //Table Name Not Supplied
+PRINT TABLE "TBName" 
+
+
 DELETE FROM "TBName"
 DELETE FROM "TBName" WHERE "Collumn" "Operator" "Value"

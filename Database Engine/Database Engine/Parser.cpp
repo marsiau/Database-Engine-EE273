@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <algorithm>
 #include "Auxilary.hpp"
 #include "Database.hpp"
 #include "Table.hpp"
@@ -160,31 +161,35 @@ int main()
           (*(DBMIt->second)).SAVEALL();
         }
       }
+      else if(UsrInV[0] == "LIST" && UsrInV[1] == "TABLES")
+      {
+        (*(ADB->second)).LIST_TABLES();
+      }
       else if(UsrInV[0] == "DROP")
       {
         if(UsrInV[1] == "DATABASE")
         {
-          if(UsrInV.size() < 3)
-          {cout<<"ERROR\nName not specified\n";}
-          else
           {(*(ADB->second)).DROP_DATABASE();}
-          MapOfDatabases.erase (ADB);
+          MapOfDatabases.erase(ADB);
         }
         else if(UsrInV[1] == "TABLE")
         {
           if(UsrInV.size() < 3)
           {cout<<"ERROR\ntable name not specified\n";}
           else
-          {(*(ADB->second)).DROP_TABLE(UsrInV[3]);}
+          {(*(ADB->second)).DROP_TABLE(UsrInV[2]);}
         }
         else {cout<<"ERROR\n";}
       }
       else if(UsrInV[0] == "INSERT" && UsrInV[1] == "INTO")
       {
-        if(UsrInV[3] == "VALUES")//Check if collumns were specified
+        //http://stackoverflow.com/questions/571394/how-to-find-if-an-item-is-present-in-a-stdvector
+        if ( !(find(UsrInV.begin(), UsrInV.end(), "VALUES") != UsrInV.end() ))
+        {cout<<"ERROR\nWrong syntax\n";}
+        else if(UsrInV[3] == "VALUES")//Check if collumns were specified
         {//If not, create a vector of values and insert into table
           vector<Cell> values;
-          for(vector<string>::iterator UsrInVIt = (UsrInV.begin()) + 3; UsrInVIt != UsrInV.end(); ++UsrInVIt)
+          for(vector<string>::iterator UsrInVIt = (UsrInV.begin()) + 4; UsrInVIt != UsrInV.end(); ++UsrInVIt)
           {
             values.push_back(*UsrInVIt);
           }
@@ -195,21 +200,24 @@ int main()
           vector<Cell> collumns;
           vector<Cell> values;
           vector<string>::iterator UsrInVIt;
-          for(UsrInVIt = UsrInV.begin(); (*UsrInVIt) != "VALUES"; ++UsrInVIt)//Create vector of collumns
+          for(UsrInVIt = UsrInV.begin() + 3; (*UsrInVIt) != "VALUES"; ++UsrInVIt)//Create vector of collumns
           {
             collumns.push_back(*UsrInVIt);
           }
           ++UsrInVIt;//Ignore "VALUES"
+          cout<<"pisk\n"<<*UsrInVIt<<endl;
           while(UsrInVIt != UsrInV.end())//Create vector of values
           {
             values.push_back(*UsrInVIt);
+            ++UsrInVIt;
+            cout<<"pisk\n"<<endl;
           }
           (*(ADB->second)).INSERT_INTO_TABLE(UsrInV[2], collumns, values);
         }
       }
       else if(UsrInV[0] == "PRINT" && UsrInV[1] == "TABLE")
       {
-        if(UsrInV.size() <= 3)
+        if(UsrInV.size() < 3)
         {cout<<"ERROR\nTable Name not supplied\n";}
         else if(!((*(ADB->second)).CHECK_TABLE(UsrInV[2])))
         {cout<<"ERROR\nTable does not exist\n";}
@@ -219,8 +227,6 @@ int main()
         }
       }
       else if(UsrInV[0] == "DELETE" && UsrInV[1] == "FROM")
-      // DELETE FROM "TBName" WHERE "Collumn" "Operator" "Value"
-      //DELETE FROM  table WHERE name = marius  name = bananas
       {
         if(UsrInV.size() == 3)
         {
@@ -234,21 +240,42 @@ int main()
           {
             vector<string> Collumns;
             vector< vector<char> > FilterCond;
+            vector<char> FilterCondVec;
             vector< vector<Cell> > FilterVal;
+            vector<Cell> FilterValVec;
             vector<string>::iterator UsrInVIt = UsrInV.begin() + 5;
             while(UsrInVIt != UsrInV.end())
             {
-              /*static string CollumnName = "";
-              CollumnName = (*UsrInVIt);
-              Collumns.push_back(*UsrInVIt);
-              ++UsrInVIt;
-              FilterCond.push_back(*UsrInVIt);
-              ++UsrInVIt;
-              FilterVal.push_back(*UsrInVIt);
-              */++UsrInVIt;
+              static string CollumnName = "";
+              if((*UsrInVIt) == CollumnName)
+              {
+                ++UsrInVIt;//Skip Collumn Name
+                FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+                ++UsrInVIt;
+                FilterValVec.push_back(*UsrInVIt);//Store comparison value
+                ++UsrInVIt;
+              }
+              else
+              {
+                //Flush previous vectors
+                if(!(FilterCondVec.empty() && !FilterValVec.empty()))
+                {
+                  FilterCond.push_back(FilterCondVec);
+                  FilterCondVec.clear();
+                  FilterVal.push_back(FilterValVec);
+                  FilterValVec.clear();
+                }
+                CollumnName = (*UsrInVIt);
+                Collumns.push_back(*UsrInVIt);//Store collumn name
+                ++UsrInVIt;
+                FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+                ++UsrInVIt;
+                FilterValVec.push_back(*UsrInVIt);//Store comparison value
+                ++UsrInVIt;
+              }
             }
+            (*(ADB->second)).DELETE_TABLE(UsrInV[2], Collumns, FilterCond, FilterVal);
           }
-          //void DELETE_TABLE(TBName,  Collumns, FilterCond, FilterVal);
         }
       }
 
