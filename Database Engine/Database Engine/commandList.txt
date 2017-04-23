@@ -1,1 +1,9 @@
-CREATE DATABASE "name"
+QUIT
+DATABASE LIST//Prints all active databases
+MAKE ACTIVE "DBName"//Makes a database active
+CREATE DATABASE "DBName"
+CREATE TABLE "TBName" "CollumnNames" "CollumnTypes"
+OPEN DATABASES "DBName"
+SAVE
+DROP DATABASE
+DRAP TABLE "TBName"
