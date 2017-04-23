@@ -172,7 +172,7 @@ int main()
         }
         else if(UsrInV[1] == "TABLE")
         {
-          if(UsrInV.size() < 4)
+          if(UsrInV.size() < 3)
           {cout<<"ERROR\ntable name not specified\n";}
           else
           {(*(ADB->second)).DROP_TABLE(UsrInV[3]);}
@@ -228,15 +228,25 @@ int main()
         }
         else
         {
-          string CollumnName;
-          vector<string> Collumns;
-          vector< vector<char> > FilterCond;
-          vector< vector<Cell> > FilterVal;
-          vector<string>::iterator UsrInVIt;
-
-          for(UsrInVIt = UsrInV.begin() + 5; UsrInVIt != UsrInV.end(); ++UsrInVIt)
+          if(!((UsrInV.size() - 4) > 0 && (UsrInV.size() - 4) % 3 == 0))
+          {cout<<"ERROR\nNot enough data provided\n";}
+          else
           {
-
+            vector<string> Collumns;
+            vector< vector<char> > FilterCond;
+            vector< vector<Cell> > FilterVal;
+            vector<string>::iterator UsrInVIt = UsrInV.begin() + 5;
+            while(UsrInVIt != UsrInV.end())
+            {
+              /*static string CollumnName = "";
+              CollumnName = (*UsrInVIt);
+              Collumns.push_back(*UsrInVIt);
+              ++UsrInVIt;
+              FilterCond.push_back(*UsrInVIt);
+              ++UsrInVIt;
+              FilterVal.push_back(*UsrInVIt);
+              */++UsrInVIt;
+            }
           }
           //void DELETE_TABLE(TBName,  Collumns, FilterCond, FilterVal);
         }
