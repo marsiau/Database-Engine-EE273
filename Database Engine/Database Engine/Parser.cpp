@@ -284,7 +284,72 @@ int main()
           }
         }
       }
-#if 0
+      else if(UsrInV[0] == "UPDATE" && UsrInV[2] == "SET")
+      {
+        if ( !(find(UsrInV.begin(), UsrInV.end(), "SET") != UsrInV.end() ) && !(find(UsrInV.begin(), UsrInV.end(), "WHERE") != UsrInV.end() ))
+        {cout<<"ERROR\nWrong syntax\n";}
+        else
+        {
+          vector<string> UPCollumns;
+          vector<Cell>  UPVal;
+          vector<string> Collumns;
+          vector< vector<char> > FilterCond;
+          vector<char> FilterCondVec;
+          vector< vector<Cell> > FilterVal;
+          vector<Cell> FilterValVec;
+          string CollumnName = "";
+          vector<string>::iterator UsrInVIt = UsrInV.begin() + 3;
+          while((*UsrInVIt) != "WHERE")//Read new values for UPCollumns
+          {
+            if((*(UsrInVIt + 1)) == "=" )//Some aditional testing
+            {
+              UPCollumns.push_back(*UsrInVIt);
+              UsrInVIt += 2;
+              UPVal.push_back(*UsrInVIt);
+            }
+            else
+            {cout<<"ERROR\nWrong syntax\n";break;}
+            ++UsrInVIt;
+          }
+          ++UsrInVIt;//Skip WHERE
+          while(UsrInVIt != UsrInV.end())//Read the conditions
+          {
+            if((*UsrInVIt) == CollumnName)
+            {
+              ++UsrInVIt;//Skip Collumn Name
+              FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+              ++UsrInVIt;
+              FilterValVec.push_back(*UsrInVIt);//Store comparison value
+            }
+            else
+            {
+              //Flush previous vectors
+              if(!FilterCondVec.empty())
+              {
+                FilterCond.push_back(FilterCondVec);
+                FilterCondVec.clear();
+              }
+              if(!FilterValVec.empty())
+              {
+                FilterVal.push_back(FilterValVec);
+                FilterValVec.clear();
+              }
+              CollumnName = (*UsrInVIt);
+              Collumns.push_back(CollumnName);//Store collumn name
+              ++UsrInVIt;
+              FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+              ++UsrInVIt;
+              FilterValVec.push_back(*UsrInVIt);//Store comparison value
+            }
+            ++UsrInVIt;
+          }
+          //Flush last words
+          FilterCond.push_back(FilterCondVec);
+          FilterVal.push_back(FilterValVec);
+          (*(ADB->second)).UPDATE_TABLE(UsrInV[1], UPCollumns, UPVal, Collumns, FilterCond, FilterVal);
+        }
+      }
+      #if 0
 #endif
 
 
