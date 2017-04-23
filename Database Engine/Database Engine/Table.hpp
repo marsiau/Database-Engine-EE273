@@ -7,8 +7,8 @@
 #include <list>
 #include <vector>
 
-//using Cell = string;
 using namespace std;
+
 typedef string Cell;
 
 class Table
@@ -38,7 +38,8 @@ list< vector<Cell*> >SELECTP(vector<Cell> CollumnNames);
 void INSERT(vector<string> collumns, vector<Cell> values);
 //Add new rows to the table, w/o specifying the collumns
 void INSERT(vector<Cell> values);
-//Adds a list of new rows. TODO NOT SAFE, no cheks performed wether the collumns match
+//Adds a list of new rows. NOT SAFE, no cheks performed whether the collumns match
+//Possible us is when merging two tables
 void INSERT(list<vector<Cell> >values);
 //Print the table
 void PRINT();

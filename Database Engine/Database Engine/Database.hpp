@@ -35,13 +35,15 @@ public:
   //Updates database and table files
   void SAVEALL();
 
+  //Checks if such table exists
+  bool CHECK_TABLE(string TBName);
   //Add new rows to the table
   void INSERT_INTO_TABLE(string TBName, vector<string> collumns, vector<Cell> values);
   //Add new rows to the table, w/o specifying the collumns
   void INSERT_INTO_TABLE(string TBName, vector<Cell> values);
-  //Adds a list of new rows. TODO NOT SAFE, no cheks performed wether the collumns match
+  //Adds a list of new rows. NOT SAFE, no cheks performed whether the collumns match
+  //Possible us is when merging two tables
   void INSERT_INTO_TABLE(string TBName, list<vector<Cell> >values);
-
   //Print table
   void PRINT_TABLE(string TBName);
 

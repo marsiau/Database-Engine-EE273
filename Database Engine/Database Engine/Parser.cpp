@@ -5,9 +5,11 @@
 #include "Auxilary.hpp"
 #include "Database.hpp"
 #include "Table.hpp"
+
 using namespace std;
 
 typedef map<string, Database*> DBMap;
+typedef string Cell;
 
 //-------------------- Internal functions --------------------
 vector<string> StrToVec(string InStr)
@@ -123,7 +125,7 @@ int main()
                 CollumnTypes.push_back(*TIt);
                 ++TIt;
               }
-              (*(ADB->second)).CREATE_TABLE(UsrInV[2], {"i", "ii","iii"}, {"i", "ii", "iii"});
+              (*(ADB->second)).CREATE_TABLE(UsrInV[2], CollumnNames, CollumnTypes);
             }
           }
         }
@@ -176,13 +178,54 @@ int main()
         }
         else {cout<<"ERROR\n";}
       }
-      else if(UsrInV[0] == "DROP")
+      else if(UsrInV[0] == "INSERT" && UsrInV[1] == "INTO")
+      {
+        if(UsrInV[3] == "VALUES")//Check if collumns were specified
+        {//If not, create a vector of values and insert into table
+          vector<Cell> values;
+          for(vector<string>::iterator UsrInVIt = (UsrInV.begin()) + 3; UsrInVIt != UsrInV.end(); ++UsrInVIt)
+          {
+            values.push_back(*UsrInVIt);
+          }
+          (*(ADB->second)).INSERT_INTO_TABLE(UsrInV[2], values);
+        }
+        else
+        {//If specified, create a vector of collumns and a vector of values and insert into table
+          vector<Cell> collumns;
+          vector<Cell> values;
+          vector<string>::iterator UsrInVIt;
+          for(UsrInVIt = UsrInV.begin(); (*UsrInVIt) != "VALUES"; ++UsrInVIt)//Create vector of collumns
+          {
+            collumns.push_back(*UsrInVIt);
+          }
+          ++UsrInVIt;//Ignore "VALUES"
+          while(UsrInVIt != UsrInV.end())//Create vector of values
+          {
+            values.push_back(*UsrInVIt);
+          }
+          (*(ADB->second)).INSERT_INTO_TABLE(UsrInV[2], collumns, values);
+        }
+      }
+      else if(UsrInV[0] == "PRINT" && UsrInV[1] == "TABLE")
+      {
+        if(UsrInV.size() <= 3)
+        {cout<<"ERROR\nTable Name not supplied\n";}
+        else if(!((*(ADB->second)).CHECK_TABLE(UsrInV[2])))
+        {cout<<"ERROR\nTable does not exist\n";}
+        else
+        {
+          (*(ADB->second)).PRINT_TABLE(UsrInV[2]);
+        }
+      }
+
+
+
 
       else {cout<<"ERROR\nUnrecognised user input\nPlease try again\n";}
     }
     else {cout<<"IFSTREAM ERROR\n\n";}
   }
-  //Destruct pointers
+  //Close and free up memory
   if(!MapOfDatabases.empty())
   {
     //Iterate through map and destruct database objects
@@ -194,10 +237,18 @@ int main()
       ++It;
     }
     //Clear the map contents
-    MapOfDatabases.clear();
+    MapOfDatabases.clear();//Just in case
   }
   return 0;
 }
 
 #if 0
+else if (!( MapOfDatabases.find(UsrInV[2]) == MapOfDatabases.end() ))//Check if not opened/created
+{cout<<"ERROR\nDatabase already open\n";}
+
+if ( m.find("f") == m.end() ) {
+  // not found
+} else {
+  // found
+}
 #endif
