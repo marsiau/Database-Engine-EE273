@@ -168,6 +168,7 @@ int main()
           {cout<<"ERROR\nName not specified\n";}
           else
           {(*(ADB->second)).DROP_DATABASE();}
+          MapOfDatabases.erase (ADB);
         }
         else if(UsrInV[1] == "TABLE")
         {
@@ -218,6 +219,8 @@ int main()
         }
       }
       else if(UsrInV[0] == "DELETE" && UsrInV[1] == "FROM")
+      // DELETE FROM "TBName" WHERE "Collumn" "Operator" "Value"
+      //DELETE FROM  table WHERE name = marius  name = bananas
       {
         if(UsrInV.size() == 3)
         {
@@ -225,9 +228,17 @@ int main()
         }
         else
         {
-          vector<string>::iterator UsrInVIt = UsrInV.begin();
+          string CollumnName;
+          vector<string> Collumns;
+          vector< vector<char> > FilterCond;
+          vector< vector<Cell> > FilterVal;
+          vector<string>::iterator UsrInVIt;
 
-          //void DELETE_TABLE(string TBName, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+          for(UsrInVIt = UsrInV.begin() + 5; UsrInVIt != UsrInV.end(); ++UsrInVIt)
+          {
+
+          }
+          //void DELETE_TABLE(TBName,  Collumns, FilterCond, FilterVal);
         }
       }
 
