@@ -354,15 +354,10 @@ int main()
           vector<string>::iterator UsrInVIt = UsrInV.begin() + 3;
           while((*UsrInVIt) != "WHERE")//Read new values for UPCollumns
           {
-            if((*(UsrInVIt + 1)) == "=" )//Some aditional testing
-            {
               UPCollumns.push_back(*UsrInVIt);
               UsrInVIt += 2;
               UPVal.push_back(*UsrInVIt);
-            }
-            else
-            {cout<<"ERROR\nWrong syntax\n";break;}
-            ++UsrInVIt;
+              ++UsrInVIt;
           }
           ++UsrInVIt;//Skip WHERE
           while(UsrInVIt != UsrInV.end())//Read the conditions
