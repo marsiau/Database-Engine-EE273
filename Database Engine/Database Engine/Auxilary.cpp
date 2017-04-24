@@ -7,7 +7,7 @@
 using namespace std;
 
 //Checks if filename has ".txt" and changes it dpending on chng
-string chkType(string InStr, bool chng)//TESTED
+string chkType(string InStr, bool chng)
 {
   int InSize = InStr.size();
   string strEnd = {InStr[InSize-4], InStr[InSize-3], InStr[InSize-2], InStr[InSize-1]};

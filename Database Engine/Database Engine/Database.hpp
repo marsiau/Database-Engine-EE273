@@ -21,15 +21,15 @@ private:
 
 public:
   //Database constructor, creates and emty database
-  Database(string Name);//TESTED
+  Database(string Name);
   //Database destructor
   ~Database();
   //Function to open an existing database
-  void OPEN();//TESTED
+  void OPEN();
   //Funciton to delete database
   void DROP_DATABASE();
   //Function to create a new table
-  void CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes);//TESTED
+  void CREATE_TABLE(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes);
   //Function to delete a table
   void DROP_TABLE(string TableName);
   //Updates database and table files

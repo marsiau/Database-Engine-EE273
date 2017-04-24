@@ -16,7 +16,7 @@ typedef pair<string, Table*> TableMapPair;
 //-------------------- Internal functions END --------------------
 
 //Create an emty database
-Database::Database(string Name)//TESTED
+Database::Database(string Name)
 {
   DBName = chkType(Name, 0);
 }

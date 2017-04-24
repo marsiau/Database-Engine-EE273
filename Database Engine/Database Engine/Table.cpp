@@ -1,4 +1,3 @@
-//TODO remove all cout statements? log file?
 #include "Table.hpp"
 #include "Auxilary.hpp"
 #include <fstream>
@@ -14,7 +13,7 @@ typedef string Cell; //supposedly same thing as: using Cell = string;
 
 //-------------------- Internal functions --------------------
 //Read a row from data stream
-vector<Cell> ReadRow(ifstream &InputStream)//TESTED
+vector<Cell> ReadRow(ifstream &InputStream)
 {
   vector<Cell> Row;
   string TEMP;
@@ -27,7 +26,7 @@ vector<Cell> ReadRow(ifstream &InputStream)//TESTED
   return Row;
 }
 //Write a row vector to the file
-void WriteRow(ofstream &OutputStream, vector<Cell> Row)//TESTED
+void WriteRow(ofstream &OutputStream, vector<Cell> Row)
 {
   vector<Cell>::iterator VIt; // VIt - Vector Iterator
   for(VIt = Row.begin(); VIt != Row.end(); ++VIt)
@@ -37,7 +36,7 @@ void WriteRow(ofstream &OutputStream, vector<Cell> Row)//TESTED
   OutputStream << endl;
 }
 //Generate a string of characters of size "size"
-string genString(int size, char character)//TESTED
+string genString(int size, char character)
 {
   string temp(size, character);
   return temp;
@@ -100,8 +99,6 @@ bool Compare(Cell CellValue,char FilterCond, Cell FilterVal)
   }
 }
 //-------------------- Internal functions END --------------------
-//Table constructor
-//Table::Table();//For temporary table
 
 //Creating a new table
 Table::Table(string NewTableName, vector<string> CollumnNames, vector<string> CollumnTypes)//
@@ -118,7 +115,7 @@ Table::Table(string NewTableName, vector<string> CollumnNames, vector<string> Co
 }
 
 //Opening an existing table
-Table::Table(string OpTableName)//TESTED
+Table::Table(string OpTableName)
 {
   TableName = chkType(OpTableName, 0);
   string FileName = chkType(OpTableName, 1);
@@ -156,7 +153,7 @@ Table::~Table()
 }
 
 //Function to write a series of values to the table file
-void Table::WRITE_TABLE_TF()//TESTED
+void Table::WRITE_TABLE_TF()
 {
   string FileName = chkType(TableName, 1); //Add the file type
   ofstream TableStream;
@@ -187,7 +184,6 @@ list< vector<Cell> > Table::SELECT(vector<Cell> CollumnNames)
 {
   vector<int> CollNum;
   list< vector<Cell> > Selection;
-  //TODO this could be reused
   vector<Cell>:: iterator VItC; // VIt - Vector Iterator for Collumns
   vector<Cell>:: iterator VItN; // VIt - Vector Iterator for Names
   for(VItC = CollumnNames.begin(); VItC < CollumnNames.end(); ++VItC)
@@ -222,49 +218,9 @@ list< vector<Cell> > Table::SELECT(vector<Cell> CollumnNames)
   }
   return Selection;
 }
-//TODO TEST
-//Returns list of vectors of pointers to Cell
-list< vector<Cell*> > Table::SELECTP(vector<Cell> CollumnNames)
-{
-  vector<int> CollNum;
-  list< vector<Cell*> > Selection;
-  vector<Cell>:: iterator VItC; // VIt - Vector Iterator for Collumns
-  vector<Cell>:: iterator VItN; // VIt - Vector Iterator for Names
-  for(VItC = CollumnNames.begin(); VItC != CollumnNames.end(); ++VItC)
-  {
-    bool found = false;
-    int i = 0;
-    for(VItN = TBCollumnNames.begin(); !found && VItN != TBCollumnNames.end(); ++VItN)
-    {
-      if((*VItC) == (*VItN))
-      {
-        CollNum.push_back(i);
-        found  = true;
-      }
-      else
-      {
-        i++;
-      }
-    }
-  }
-
-  list< vector<Cell> >:: iterator LItD; // LIt - List Iterator for TableData
-  for(LItD = TableData.begin(); LItD != TableData.end(); ++LItD)
-  {
-    //Create a temp vector to store selected row data
-    vector<Cell*> temp;
-    for(int i = 0; i < CollNum.size(); i++)
-    {
-      temp.push_back(&((*LItD)[i]));
-    }
-    //Push temp to Selection
-    Selection.push_back(temp);
-  }
-  return Selection;
-}
 
 //Add new rows to the table
-void Table::INSERT(vector<Cell> collumns, vector<Cell> values)//TESTED
+void Table::INSERT(vector<Cell> collumns, vector<Cell> values)
 {
   //TBCollumnNames iterator declared here as the collumns should be given in order
   //thus this is only to skip collumns required to be emty
@@ -295,19 +251,19 @@ void Table::INSERT(vector<Cell> collumns, vector<Cell> values)//TESTED
   TableData.push_back(Row);
 }
 //Add new rows to the table, without specifying the collumns
-void Table::INSERT(vector<Cell> values)//TESTED
+void Table::INSERT(vector<Cell> values)
 {
   TableData.push_back({values});
 }
 
 //Adds a list of new rows.
-void Table::INSERT(list<vector<Cell> >values)//TESTED
+void Table::INSERT(list<vector<Cell> >values)
 {
   TableData.splice(TableData.end(), values);
 }
 
 //Print the table
-void Table::PRINT()//TESTED
+void Table::PRINT()
 {
   const int width = 20;
   string linelim((width + 1) * TBCollumnNames.size(),'-');

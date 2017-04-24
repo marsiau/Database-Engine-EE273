@@ -15,7 +15,6 @@ class Table
 {
 private:
 string TableName;
-//TODO Why vector of cells for names and types?
 vector<string> TBCollumnNames;
 vector<string> TBCollumnTypes;
 list< vector<Cell> > TableData;
@@ -31,9 +30,8 @@ Table(string OpTableName);
 //Function to write a series of values to the table files
 void WRITE_TABLE_TF();
 //Function to select specific collumns of table. Returns list of vectors of cells
-list< vector<Cell> > SELECT(vector<Cell> CollumnNames);
-//Function to select specific collumns of table. Returns list of vectors of pointers
-list< vector<Cell*> >SELECTP(vector<Cell> CollumnNames);
+//Could be used when merging tables
+list< vector<Cell> > SELECT(vector<Cell> CollumnNames);//NOT USED
 //Add new rows to the table
 void INSERT(vector<string> collumns, vector<Cell> values);
 //Add new rows to the table, w/o specifying the collumns

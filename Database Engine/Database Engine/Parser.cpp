@@ -58,12 +58,12 @@ int main()
       UsrInV.clear();//Clear user input vector
       UsrInV = StrToVec(UsrIn);//Convert user input to a vector
       UsrIn = "";
-      //Do command
-      if(UsrInV[0] == "QUIT")//TESTED
+      //Parse command
+      if(UsrInV[0] == "QUIT")
       {
         quit = true;
       }
-      else if(UsrInV[0] == "DATABASE" && UsrInV[1] == "LIST")//TESTED
+      else if(UsrInV[0] == "DATABASE" && UsrInV[1] == "LIST")
       {
         for(DBMap::iterator DBMIt = MapOfDatabases.begin(); DBMIt != MapOfDatabases.end(); ++DBMIt)//Database map iterator
         {
@@ -72,7 +72,7 @@ int main()
           cout<<endl;
         }
       }
-      else if(UsrInV[0] == "MAKE" && UsrInV[1] == "ACTIVE")//TESTED
+      else if(UsrInV[0] == "MAKE" && UsrInV[1] == "ACTIVE")
       {
         if(UsrInV.size() < 3)
         {cout<<"ERROR\nDatabase name not specified\n";}
@@ -81,7 +81,7 @@ int main()
           ADB = MapOfDatabases.find(UsrInV[2]);
         }
       }
-      else if(UsrInV[0] == "CREATE")//TESTED
+      else if(UsrInV[0] == "CREATE")
       {
         if(UsrInV[1] == "DATABASE")
         {
@@ -108,7 +108,7 @@ int main()
         else if(UsrInV[1] == "TABLE")
         {
           if(MapOfDatabases.empty())//Check if there is any databases
-          {cout<<"ERROR\nNo database exists\n";} //TODO check this
+          {cout<<"ERROR\nDatabase does not exist\n";}
           else if(UsrInV.size() <= 3)
           {cout<<"ERROR\nNot Enough input data supplied\n";}
           else
@@ -131,7 +131,7 @@ int main()
           }
         }
       }
-      else if(UsrInV[0] == "OPEN" && UsrInV[1] == "DATABASE")//TESTED MS
+      else if(UsrInV[0] == "OPEN" && UsrInV[1] == "DATABASE")
       {
         if(UsrInV.size() < 3)
         {cout<<"ERROR\nDatabase name not specified\n";}
@@ -154,18 +154,18 @@ int main()
           }
         }
       }
-      else if(UsrInV[0] == "SAVE")//TESTED MS
+      else if(UsrInV[0] == "SAVE")
       {
         for(DBMap::iterator DBMIt = MapOfDatabases.begin(); DBMIt != MapOfDatabases.end(); ++DBMIt)
         {
           (*(DBMIt->second)).SAVEALL();
         }
       }
-      else if(UsrInV[0] == "LIST" && UsrInV[1] == "TABLES")//TESTED MS
+      else if(UsrInV[0] == "LIST" && UsrInV[1] == "TABLES")
       {
         (*(ADB->second)).LIST_TABLES();
       }
-      else if(UsrInV[0] == "DROP")//TESTED MS
+      else if(UsrInV[0] == "DROP")
       {
         if(UsrInV[1] == "DATABASE")
         {
@@ -181,7 +181,7 @@ int main()
         }
         else {cout<<"ERROR\n";}
       }
-      else if(UsrInV[0] == "INSERT" && UsrInV[1] == "INTO")//TESTED MS
+      else if(UsrInV[0] == "INSERT" && UsrInV[1] == "INTO")
       {
         //http://stackoverflow.com/questions/571394/how-to-find-if-an-item-is-present-in-a-stdvector
         if ( !(find(UsrInV.begin(), UsrInV.end(), "VALUES") != UsrInV.end() ))
@@ -349,10 +349,6 @@ int main()
           (*(ADB->second)).UPDATE_TABLE(UsrInV[1], UPCollumns, UPVal, Collumns, FilterCond, FilterVal);
         }
       }
-      #if 0
-#endif
-
-
       else {cout<<"ERROR\nUnrecognised user input\nPlease try again\n";}
     }
     else {cout<<"IFSTREAM ERROR\n\n";}
@@ -373,16 +369,3 @@ int main()
   }
   return 0;
 }
-
-#if 0
-else if (!( MapOfDatabases.find(UsrInV[2]) == MapOfDatabases.end() ))//Check if not opened/created
-{cout<<"ERROR\nDatabase already open\n";}
-
-if ( m.find("f") == m.end() ) {
-  // not found
-} else {
-  // found
-}
-
-(*(ADB->second))
-#endif
