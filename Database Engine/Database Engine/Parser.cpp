@@ -205,12 +205,10 @@ int main()
             collumns.push_back(*UsrInVIt);
           }
           ++UsrInVIt;//Ignore "VALUES"
-          cout<<"pisk\n"<<*UsrInVIt<<endl;
           while(UsrInVIt != UsrInV.end())//Create vector of values
           {
             values.push_back(*UsrInVIt);
             ++UsrInVIt;
-            cout<<"pisk\n"<<endl;
           }
           (*(ADB->second)).INSERT_INTO_TABLE(UsrInV[2], collumns, values);
         }
@@ -239,8 +237,8 @@ int main()
           else
           {
             vector<string> Collumns;
-            vector< vector<char> > FilterCond;
-            vector<char> FilterCondVec;
+            vector< vector<string> > FilterCond;
+            vector<string> FilterCondVec;
             vector< vector<Cell> > FilterVal;
             vector<Cell> FilterValVec;
             vector<string>::iterator UsrInVIt = UsrInV.begin() + 4;
@@ -250,7 +248,7 @@ int main()
               if((*UsrInVIt) == CollumnName)
               {
                 ++UsrInVIt;//Skip Collumn Name
-                FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+                FilterCondVec.push_back(*UsrInVIt);//Store comparison operator
                 ++UsrInVIt;
                 FilterValVec.push_back(*UsrInVIt);//Store comparison value
               }
@@ -270,7 +268,7 @@ int main()
                 CollumnName = (*UsrInVIt);
                 Collumns.push_back(CollumnName);//Store collumn name
                 ++UsrInVIt;
-                FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+                FilterCondVec.push_back(*UsrInVIt);//Store comparison operator
                 ++UsrInVIt;
                 FilterValVec.push_back(*UsrInVIt);//Store comparison value
               }
@@ -293,8 +291,8 @@ int main()
           vector<string> UPCollumns;
           vector<Cell>  UPVal;
           vector<string> Collumns;
-          vector< vector<char> > FilterCond;
-          vector<char> FilterCondVec;
+          vector< vector<string> > FilterCond;
+          vector<string> FilterCondVec;
           vector< vector<Cell> > FilterVal;
           vector<Cell> FilterValVec;
           string CollumnName = "";
@@ -317,7 +315,7 @@ int main()
             if((*UsrInVIt) == CollumnName)
             {
               ++UsrInVIt;//Skip Collumn Name
-              FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+              FilterCondVec.push_back(*UsrInVIt);//Store comparison operator
               ++UsrInVIt;
               FilterValVec.push_back(*UsrInVIt);//Store comparison value
             }
@@ -337,7 +335,7 @@ int main()
               CollumnName = (*UsrInVIt);
               Collumns.push_back(CollumnName);//Store collumn name
               ++UsrInVIt;
-              FilterCondVec.push_back(char((*UsrInVIt)[0]));//Store comparison operator
+              FilterCondVec.push_back(*UsrInVIt);//Store comparison operator
               ++UsrInVIt;
               FilterValVec.push_back(*UsrInVIt);//Store comparison value
             }

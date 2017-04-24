@@ -50,8 +50,8 @@ public:
   //Deletes all data stored in table
   void DELETE_TABLE(string TBName);
   //Deletes specific rows of table data
-  void DELETE_TABLE(string TBName, vector<string> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+  void DELETE_TABLE(string TBName, vector<string> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal);
   //Changes/updates specific collumns
-  void UPDATE_TABLE(string TBName, vector<string> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal);
+  void UPDATE_TABLE(string TBName, vector<string> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal);
 };
 #endif

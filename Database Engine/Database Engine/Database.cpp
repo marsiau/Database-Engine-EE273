@@ -196,13 +196,13 @@ void Database::DELETE_TABLE(string TBName)
   (*(MapOfTables.find(TBName))->second).DELETE();
 }
 //Deletes specific rows of table data
-void Database::DELETE_TABLE(string TBName, vector<string> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+void Database::DELETE_TABLE(string TBName, vector<string> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
 {
   (*MapOfTables.find(TBName)->second).DELETE(Collumns, FilterCond, FilterVal);
 }
 
 //Changes/updates specific collumns
-void Database::UPDATE_TABLE(string TBName, vector<string> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+void Database::UPDATE_TABLE(string TBName, vector<string> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
 {
   (*MapOfTables.find(TBName)->second).UPDATE(UpCollumns, UpVal, Collumns, FilterCond, FilterVal);
 }

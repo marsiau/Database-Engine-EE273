@@ -68,27 +68,27 @@ vector<int> SelColl(vector<string> TBCollumnNames, vector<Cell> CollumnNames)
   return CollNum;
 }
 //Compare Cell value to filter value
-bool Compare(Cell CellValue,char FilterCond, Cell FilterVal)
+bool Compare(Cell CellValue, string FilterCond, Cell FilterVal)
 {
   switch(FilterCond)
   {
-    case '=' :
+    case "=" :
       if(CellValue.compare(FilterVal) == 0) {return 1;}
       else {return 0;}
       break;
-    case '<' :
+    case "<" :
       if(CellValue.compare(FilterVal) < 0) {return 1;}
       else {return 0;}
       break;
-    case '>' :
+    case ">" :
       if(CellValue.compare(FilterVal) > 0) {return 1;}
       else {return 0;}
       break;
-    case '<=' :
+    case "<=" :
       if(CellValue.compare(FilterVal) <= 0) {return 1;}
       else {return 0;}
       break;
-    case '>=' :
+    case ">=" :
       if(CellValue.compare(FilterVal) >= 0) {return 1;}
       else {return 0;}
       break;
@@ -301,7 +301,7 @@ void Table::PRINT()
 }
 
 //Returns list of pointers to rows where conditions are met
-list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
 {
   list< vector<Cell>* > Selection;
   vector<int> CollNum = SelColl(TBCollumnNames, Collumns);
@@ -311,11 +311,11 @@ list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<char> >
   {
     bool req = false;
     vector<int>::iterator CIt; //Cell vector iterators
-    vector< vector<char> >::iterator VVCh = FilterCond.begin();
+    vector< vector<string> >::iterator VVCh = FilterCond.begin();
     vector< vector<Cell> >::iterator VVC = FilterVal.begin();
     for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt, ++VVCh, ++VVC)
     {
-      vector<char>::iterator VCh = (*VVCh).begin();
+      vector<string>::iterator VCh = (*VVCh).begin();
       vector<Cell>::iterator VC = (*VVC).begin();
       for(; VCh != (*VVCh).end() && VC != (*VVC).end(); ++VCh, ++VC )
       {
@@ -334,7 +334,7 @@ list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<char> >
 }
 
 //Changes/updates specific collumns
-void Table::UPDATE(vector<string> UpCollumns, vector<Cell> UpVal, vector<string> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+void Table::UPDATE(vector<string> UpCollumns, vector<Cell> UpVal, vector<string> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
 {
   list< vector<Cell>* > pSelRows = this->WHERE(Collumns, FilterCond, FilterVal);
   vector<int> CollNum = SelColl(TBCollumnNames, UpCollumns);
@@ -357,7 +357,7 @@ void Table::DELETE()
   TableData.erase(TableData.begin(), TableData.end());
 }
 //Deletes specific rows of table data
-void Table::DELETE(vector<string> Collumns, vector< vector<char> > FilterCond, vector< vector<Cell> > FilterVal)
+void Table::DELETE(vector<string> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
 {
   vector<int> CollNum = SelColl(TBCollumnNames, Collumns);
   vector<Cell> ::iterator FIt; //Filter condition data iterator
@@ -366,11 +366,11 @@ void Table::DELETE(vector<string> Collumns, vector< vector<char> > FilterCond, v
   {
     bool del = false;
     vector<int>::iterator CIt; //Cell vector iterators
-    vector< vector<char> >::iterator VVCh = FilterCond.begin();
+    vector< vector<string> >::iterator VVCh = FilterCond.begin();
     vector< vector<Cell> >::iterator VVC = FilterVal.begin();
     for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt, ++VVCh, ++VVC)
     {
-      vector<char>::iterator VCh = (*VVCh).begin();
+      vector<string>::iterator VCh = (*VVCh).begin();
       vector<Cell>::iterator VC = (*VVC).begin();
       for(; VCh != (*VVCh).end() && VC != (*VVC).end(); ++VCh, ++VC )
       {
