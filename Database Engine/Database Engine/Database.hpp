@@ -47,6 +47,8 @@ public:
   void INSERT_INTO_TABLE(string TBName, list<vector<Cell> >values);
   //Print table
   void PRINT_TABLE(string TBName);
+  //Prints rows that meet WHERE conditions
+  void PRINT_TABLE(string TBName, vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal);
   //Deletes all data stored in table
   void DELETE_TABLE(string TBName);
   //Deletes specific rows of table data

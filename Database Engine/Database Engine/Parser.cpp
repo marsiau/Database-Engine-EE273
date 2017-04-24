@@ -219,10 +219,65 @@ int main()
         {cout<<"ERROR\nTable Name not supplied\n";}
         else if(!((*(ADB->second)).CHECK_TABLE(UsrInV[2])))
         {cout<<"ERROR\nTable does not exist\n";}
-        else
+        else if(UsrInV.size() == 3)
         {
           (*(ADB->second)).PRINT_TABLE(UsrInV[2]);
         }
+        ///////////////////////////////////
+        else if(UsrInV[3] == "WHERE")
+        {
+          if(!((UsrInV.size() - 4) > 0 && (UsrInV.size() - 4) % 3 == 0))
+          {cout<<"ERROR\nNot enough data provided\n";}
+          else
+          {
+            vector<string> Collumns;
+            vector< vector<string> > FilterCond;
+            vector<string> FilterCondVec;
+            vector< vector<Cell> > FilterVal;
+            vector<Cell> FilterValVec;
+            vector<string>::iterator UsrInVIt = UsrInV.begin() + 4;
+            string CollumnName = "";
+            while(UsrInVIt != UsrInV.end())
+            {
+              if((*UsrInVIt) == CollumnName)
+              {
+                ++UsrInVIt;//Skip Collumn Name
+                FilterCondVec.push_back(*UsrInVIt);//Store comparison operator
+                ++UsrInVIt;
+                FilterValVec.push_back(*UsrInVIt);//Store comparison value
+              }
+              else
+              {
+                //Flush previous vectors
+                if(!FilterCondVec.empty())
+                {
+                  FilterCond.push_back(FilterCondVec);
+                  FilterCondVec.clear();
+                }
+                if(!FilterValVec.empty())
+                {
+                  FilterVal.push_back(FilterValVec);
+                  FilterValVec.clear();
+                }
+                CollumnName = (*UsrInVIt);
+                Collumns.push_back(CollumnName);//Store collumn name
+                ++UsrInVIt;
+                FilterCondVec.push_back(*UsrInVIt);//Store comparison operator
+                ++UsrInVIt;
+                FilterValVec.push_back(*UsrInVIt);//Store comparison value
+              }
+              ++UsrInVIt;
+            }
+            //Flush last words
+            FilterCond.push_back(FilterCondVec);
+            FilterVal.push_back(FilterValVec);
+            //Delete them
+            //(*(ADB->second)).DELETE_TABLE(UsrInV[2], Collumns, FilterCond, FilterVal);
+            //Print them
+            (*(ADB->second)).PRINT_TABLE(UsrInV[2], Collumns, FilterCond, FilterVal);
+          }
+        }
+        ///////////////////////////////////
       }
       else if(UsrInV[0] == "DELETE" && UsrInV[1] == "FROM")
       {

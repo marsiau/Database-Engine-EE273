@@ -218,6 +218,39 @@ list< vector<Cell> > Table::SELECT(vector<Cell> CollumnNames)
   return Selection;
 }
 
+//Returns list of pointers to rows where conditions are met
+list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
+{
+  list< vector<Cell>* > Selection;
+  vector<int> CollNum = SelColl(TBCollumnNames, Collumns);
+  vector<Cell> ::iterator FIt; //Filter condition data iterator
+  list< vector<Cell> >::iterator LIt, tmp ; //Data list iterator
+  for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
+  {
+    bool req = false;
+    vector<int>::iterator CIt; //Cell vector iterators
+    vector< vector<string> >::iterator VVCh = FilterCond.begin();
+    vector< vector<Cell> >::iterator VVC = FilterVal.begin();
+    for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt, ++VVCh, ++VVC)
+    {
+      vector<string>::iterator VCh = (*VVCh).begin();
+      vector<Cell>::iterator VC = (*VVC).begin();
+      for(; VCh != (*VVCh).end() && VC != (*VVC).end(); ++VCh, ++VC )
+      {
+        if(Compare( ((*LIt)[*CIt]), (*VCh), (*VC) ))
+        {
+          req = true;
+        }
+      }
+    }
+    if(req)
+    {
+      Selection.push_back(&(*LIt));
+    }
+  }
+  return Selection;
+}
+
 //Add new rows to the table
 void Table::INSERT(vector<Cell> collumns, vector<Cell> values)
 {
@@ -299,37 +332,43 @@ void Table::PRINT()
   }
 }
 
-//Returns list of pointers to rows where conditions are met
-list< vector<Cell>* > Table::WHERE(vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
+//Prints rows that meet WHERE conditions
+void Table::PRINT(vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
 {
-  list< vector<Cell>* > Selection;
-  vector<int> CollNum = SelColl(TBCollumnNames, Collumns);
-  vector<Cell> ::iterator FIt; //Filter condition data iterator
-  list< vector<Cell> >::iterator LIt, tmp ; //Data list iterator
-  for(LIt = TableData.begin(); LIt != TableData.end(); ++LIt)
+  //Fetch required data
+  list< vector<Cell>* > pSelRows = WHERE(Collumns, FilterCond, FilterVal);
+  const int width = 20;
+  string linelim((width + 1) * TBCollumnNames.size(),'-');
+  list< vector<Cell>* >:: iterator LIt; // LIt - List iterator for Rows
+  vector<Cell>:: iterator VIt; // VIt - Vector iterator for Collumns
+  int CollumnsNum = 0; //To record how many collumns there are
+  int pCollumnsNum; //Printed collumns
+  //Print collumn names
+  cout<<endl<<linelim<<endl;
+  for(VIt = TBCollumnNames.begin(); VIt != TBCollumnNames.end(); ++VIt)
   {
-    bool req = false;
-    vector<int>::iterator CIt; //Cell vector iterators
-    vector< vector<string> >::iterator VVCh = FilterCond.begin();
-    vector< vector<Cell> >::iterator VVC = FilterVal.begin();
-    for(CIt = CollNum.begin(); CIt != CollNum.end(); ++CIt, ++VVCh, ++VVC)
-    {
-      vector<string>::iterator VCh = (*VVCh).begin();
-      vector<Cell>::iterator VC = (*VVC).begin();
-      for(; VCh != (*VVCh).end() && VC != (*VVC).end(); ++VCh, ++VC )
-      {
-        if(Compare( ((*LIt)[*CIt]), (*VCh), (*VC) ))
-        {
-          req = true;
-        }
-      }
-    }
-    if(req)
-    {
-      Selection.push_back(&(*LIt));
-    }
+    //Creating centered names.
+    string temp = genString((width-(*VIt).size())/2,' ') + (*VIt);
+    cout<<left<<setw(width)<<temp<<"|";
+    CollumnsNum++;
   }
-  return Selection;
+  cout<<endl<<linelim<<endl;
+  //Print table data
+  for(LIt = pSelRows.begin(); LIt != pSelRows.end(); ++LIt)
+  {
+    pCollumnsNum = 0;
+    for(VIt = (*(*LIt)).begin(); VIt != (*(*LIt)).end(); ++VIt)
+    {
+      cout<<right<<setw(width)<<(*VIt)<<"|";
+      pCollumnsNum++;
+    }
+    //If there is less data then collumnsNum, print the borders
+    for(int i = 0; i != (CollumnsNum - pCollumnsNum); i++)
+    {
+      cout<<genString(width, ' ')<<"|";
+    }
+    cout<<endl<<linelim<<endl;
+  }
 }
 
 //Changes/updates specific collumns

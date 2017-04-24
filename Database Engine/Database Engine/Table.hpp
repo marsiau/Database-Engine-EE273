@@ -39,10 +39,12 @@ void INSERT(vector<Cell> values);
 //Adds a list of new rows. NOT SAFE, no cheks performed whether the collumns match
 //Possible us is when merging two tables
 void INSERT(list<vector<Cell> >values);
-//Print the table
-void PRINT();
 //Returns list of pointers to rows where conditions are met
 list< vector<Cell>* > WHERE(vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal);
+//Print the table
+void PRINT();
+//Prints rows that meet WHERE conditions
+void PRINT(vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal);
 //Changes/updates specific collumns
 void UPDATE(vector<Cell> UpCollumns, vector<Cell> UpVal, vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal);
 //Deletes all data stored in table

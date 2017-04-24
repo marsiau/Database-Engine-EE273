@@ -190,6 +190,12 @@ void Database::PRINT_TABLE(string TBName)
   (*(MapOfTables.find(TBName))->second).PRINT();
 }
 
+//Prints rows of a table that meet WHERE conditions
+void Database::PRINT_TABLE(string TBName, vector<Cell> Collumns, vector< vector<string> > FilterCond, vector< vector<Cell> > FilterVal)
+{
+  (*(MapOfTables.find(TBName))->second).PRINT(Collumns, FilterCond, FilterVal);
+}
+
 //Deletes all data stored in table
 void Database::DELETE_TABLE(string TBName)
 {
