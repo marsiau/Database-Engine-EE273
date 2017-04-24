@@ -70,33 +70,32 @@ vector<int> SelColl(vector<string> TBCollumnNames, vector<Cell> CollumnNames)
 //Compare Cell value to filter value
 bool Compare(Cell CellValue, string FilterCond, Cell FilterVal)
 {
-  switch(FilterCond)
+  if(FilterCond == "=")
   {
-    case "=" :
-      if(CellValue.compare(FilterVal) == 0) {return 1;}
-      else {return 0;}
-      break;
-    case "<" :
-      if(CellValue.compare(FilterVal) < 0) {return 1;}
-      else {return 0;}
-      break;
-    case ">" :
-      if(CellValue.compare(FilterVal) > 0) {return 1;}
-      else {return 0;}
-      break;
-    case "<=" :
-      if(CellValue.compare(FilterVal) <= 0) {return 1;}
-      else {return 0;}
-      break;
-    case ">=" :
-      if(CellValue.compare(FilterVal) >= 0) {return 1;}
-      else {return 0;}
-      break;
-
-    default:
-      return 0;
-      break;
+    if(CellValue.compare(FilterVal) == 0) {return 1;}
+    else {return 0;}
   }
+  else if(FilterCond == "<")
+  {
+    if(CellValue.compare(FilterVal) < 0) {return 1;}
+    else {return 0;}
+  }
+  else if(FilterCond == ">")
+  {
+    if(CellValue.compare(FilterVal) > 0) {return 1;}
+    else {return 0;}
+  }
+  else if(FilterCond == "<=")
+  {
+    if(CellValue.compare(FilterVal) <= 0) {return 1;}
+    else {return 0;}
+  }
+  else if(FilterCond ==  ">=")
+  {
+    if(CellValue.compare(FilterVal) >= 0) {return 1;}
+    else {return 0;}
+  }
+  else {return 0;}
 }
 //-------------------- Internal functions END --------------------
 
