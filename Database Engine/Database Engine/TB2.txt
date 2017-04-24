@@ -1,0 +1,6 @@
+NR,Name,Surname,
+int,string,string,
+1,Mario,emty,emty,
+2,Mario,emty,emty,
+3,a,b,c,
+3,b,b,b,
